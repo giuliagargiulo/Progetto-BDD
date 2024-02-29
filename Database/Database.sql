@@ -15,7 +15,7 @@ CREATE TABLE a.UTENTE(
     Username varchar(32),
     Nome varchar(32),
     Cognome varchar(32),
-    Telefono INTEGER,
+    Telefono varchar(10),
     Email varchar(64),
     Password varchar(32),
     IdGruppo INTEGER,
