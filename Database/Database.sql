@@ -15,7 +15,7 @@ CREATE TABLE a.UTENTE(
     Username varchar(32),
     Nome varchar(32),
     Cognome varchar(32),
-    Telefono INTEGER,
+    Telefono varchar(10),
     Email varchar(64),
     Password varchar(32),
     IdGruppo INTEGER,
@@ -39,15 +39,17 @@ CREATE TABLE a.SPESE_PROGRAMMATE(
     Descrizione varchar(64),
     Periodicita varchar(16),
     Scadenza date,
+    DataFineRinnovo date,
     Importo INTEGER,
     IdCarta INTEGER,
 
     CONSTRAINT PK_SPESA PRIMARY KEY (IdSpesa),
     CONSTRAINT FK_CARTA FOREIGN KEY(IdCarta) REFERENCES a.CARTA(IdCarta) ON DELETE CASCADE
+    -- l'importo può essere negativo??
 );
 
 CREATE TABLE a.PORTAFOGLIO(
-    IdPortafoglio serial,
+    IdPortafoglio SERIAL,
     NomePortafoglio varchar(32) NOT NULL,
     Saldo float NOT NULL,
 
@@ -55,7 +57,7 @@ CREATE TABLE a.PORTAFOGLIO(
 );
 
 CREATE TABLE a.TRANSAZIONE_ENTRATA(
-    IdTransazione serial,
+    IdTransazione SERIAL,
     Importo float,
     Data date NOT NULL,
     Categoria varchar(16) NOT NULL,
@@ -70,7 +72,7 @@ CREATE TABLE a.TRANSAZIONE_ENTRATA(
 );
 
 CREATE TABLE a.TRANSAZIONE_USCITA(
-    IdTransazione serial,
+    IdTransazione SERIAL,
     Importo float NOT NULL,
     Data date NOT NULL,
     Categoria varchar(16) NOT NULL,

@@ -5,8 +5,8 @@ INSERT INTO a.Famiglia(NomeGruppo) VALUES('Famiglia Gaetano');
 INSERT INTO a.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES ('Giulia28','Giulia','Gargiulo','3662648291', 'giulia.gargiulo3@studenti.unina.it','Password1', 1);
 INSERT INTO a.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES ('MirGae','Miriam', 'Gaetano', '3316581941','miriam.gaetano@studenti.unina.it','Password2', 2);
 
-INSERT INTO a.carta(idcarta, nomecarta, saldo, username) VALUES (1, 'PostePay Evolution', 1234.56, 'Giulia28');
-INSERT INTO a.carta(idcarta, nomecarta, saldo, username) VALUES (2, '', 543, 'Giulia28');
+INSERT INTO a.carta(idcarta, nomecarta, saldo, username) VALUES ('PostePay Evolution', 1234.56, 'Giulia28');
+INSERT INTO a.carta(idcarta, nomecarta, saldo, username) VALUES ('BANCO POSTA', 543, 'Giulia28');
 
 
 
