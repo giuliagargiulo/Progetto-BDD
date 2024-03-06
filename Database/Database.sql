@@ -5,6 +5,7 @@ CREATE SCHEMA a;
 
 CREATE TABLE a.FAMIGLIA(
     IdGruppo SERIAL,
+    
     NomeGruppo varchar(32),
 
     CONSTRAINT PK_famiglia PRIMARY KEY (IdGruppo),
