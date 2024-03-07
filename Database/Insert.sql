@@ -5,20 +5,39 @@ INSERT INTO a.Famiglia(NomeGruppo) VALUES('Famiglia Gaetano');
 INSERT INTO a.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES ('Giulia28','Giulia','Gargiulo','3662648291', 'giulia.gargiulo3@studenti.unina.it','Password1', 1);
 INSERT INTO a.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES ('MirGae','Miriam', 'Gaetano', '3316581941','miriam.gaetano@studenti.unina.it','Password2', 2);
 
-<<<<<<< HEAD
-INSERT INTO a.carta(nomecarta, saldo, username) VALUES ('PostePay Evolution', 1234.56, 'Giulia28');
-INSERT INTO a.carta(nomecarta, saldo, username) VALUES ('BancoPosta', 543, 'Giulia28');
-=======
-INSERT INTO a.carta(idcarta, nomecarta, saldo, username) VALUES ('PostePay Evolution', 1234.56, 'Giulia28');
-INSERT INTO a.carta(idcarta, nomecarta, saldo, username) VALUES ('BANCO POSTA', 543, 'Giulia28');
->>>>>>> f1218d3b23e2b552f80908dca25a0aeb3a5bf7ab
+INSERT INTO A.CARTA(numerocarta,saldo) VALUES('10',100);
+INSERT INTO A.CARTA(numerocarta,saldo) VALUES('20',1003);
+INSERT INTO A.CARTA(numerocarta,saldo) VALUES('30',10032);
+INSERT INTO A.CARTA(numerocarta,saldo) VALUES('40',1324);
+INSERT INTO A.CARTA(numerocarta,saldo) VALUES('50',1421);
+INSERT INTO A.CARTA(numerocarta,saldo) VALUES('60',5230);
+
+INSERT INTO a.Portafoglio(idportafoglio) VALUES(1);
+INSERT INTO a.Portafoglio(idportafoglio)VALUES(2);
+INSERT INTO a.Portafoglio(idportafoglio) VALUES(3);
 
 
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(1,10,'10');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(2,200,'10');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(3,45,'10');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(4,10,'20');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(5,200,'20');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(6,45,'20');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(7,10,'30');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(8,200,'30');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(9,45,'30');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(10,10,'30');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(11,200,'30');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(12,45,'40');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(13,10,'40');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(14,200,'40');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(15,45,'40');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(16,10,'40');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(17,200,'40');
+INSERT INTO a.Transazione(cro, importo, numerocarta) VALUES(18,45,'40');
 
-INSERT INTO a.Spese_Programmate(descrizione, periodicita, scadenza,importo, idcarta) VALUES('Bollette','Bimestrale','30-03-2024',100, 1);
-INSERT INTO a.Spese_Programmate(descrizione, periodicita, scadenza,importo, idcarta) VALUES('Netflix', 'Mensile', '30-03-2024',10,  1);
-INSERT INTO a.Spese_Programmate(descrizione, periodicita, scadenza,importo, idcarta) VALUES('Mutuo','Annuale','01-01-2025', 2, 2500);
-INSERT INTO a.Spese_Programmate(descrizione, periodicita, scadenza,importo, idcarta) VALUES('Rata Auto', 'Mensile', '30-05-2024',300, 5);
 
-
-
+INSERT INTO a.Associazione(idportafoglio, numerocarta)VALUES(1, '10');
+INSERT INTO a.Associazione(idportafoglio, numerocarta)VALUES(2, '20');
+INSERT INTO a.Associazione(idportafoglio, numerocarta)VALUES(3, '30');
+INSERT INTO a.Associazione(idportafoglio, numerocarta)VALUES(3, '30');
