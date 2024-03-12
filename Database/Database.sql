@@ -1,102 +1,110 @@
-DROP SCHEMA IF EXISTS a CASCADE;
-CREATE SCHEMA a;
+DROP SCHEMA IF EXISTS smu CASCADE;
+CREATE SCHEMA smu;
 
 --CREAZIONE TABELLE
 
-CREATE TABLE a.FAMIGLIA(
+CREATE TABLE smu.FAMIGLIA(
     IdGruppo SERIAL,
-    NomeGruppo varchar(32),
+    NomeGruppo VARCHAR(128),
 
     CONSTRAINT PK_famiglia PRIMARY KEY (IdGruppo),
     CONSTRAINT CK_famiglia CHECK (NomeGruppo IS NOT NULL)
 );
 
-CREATE TABLE a.UTENTE(
-    Username varchar(32),
-    Nome varchar(32),
-    Cognome varchar(32),
-    Telefono varchar(10),
-    Email varchar(64),
-    Password varchar(32),
+CREATE TABLE smu.UTENTE(
+    Username VARCHAR(32),
+    Nome VARCHAR(32),
+    Cognome VARCHAR(32),
+    Telefono VARCHAR(10),
+    Email VARCHAR(64),
+    Password VARCHAR(32),
     IdGruppo INTEGER,
 
     CONSTRAINT PK_Utente PRIMARY KEY (Username),
-    CONSTRAINT FK_Famiglia FOREIGN KEY(IdGruppo) REFERENCES a.FAMIGLIA(IdGruppo) ON DELETE CASCADE,
+    CONSTRAINT FK_Famiglia FOREIGN KEY(IdGruppo) REFERENCES smu.FAMIGLIA(IdGruppo) ON DELETE CASCADE,
     CONSTRAINT UK_Utente UNIQUE (Email, Password)
 );
 
-CREATE TABLE a.CONTO(
-    NumeroConto varchar(16),
-    IBAN varchar(16),
-    BIC varchar(6),
-    Saldo float,
-    NomeBanca varchar(32),
-    Username varchar(32),
+CREATE TABLE smu.CONTO(
+    NumeroConto VARCHAR(16),
+    IBAN VARCHAR(16),
+    Saldo FLOAT,
+    NomeBanca VARCHAR(128),
+    BIC VARCHAR(6),
+    Username VARCHAR(32),
 
     CONSTRAINT PK_CONTO PRIMARY KEY (NumeroConto),
-    CONSTRAINT FK_UTENTE FOREIGN KEY(Username) REFERENCES a.UTENTE(Username) ON DELETE CASCADE
+    CONSTRAINT FK_UTENTE FOREIGN KEY(Username) REFERENCES smu.UTENTE(Username) ON DELETE CASCADE
 );
 
-CREATE TABLE a.CARTA(
-    NumeroCarta varchar(16),
-    NomeCarta varchar(32),
-    Scadenza date, --NOT NULL,
-    Saldo float,
-    Plafond float,
-    TipoCarta BOOLEAN,
-    NumeroConto varchar(16),
+CREATE TABLE smu.CARTA(
+    NumeroCarta VARCHAR(16),
+    Nome VARCHAR(32),
+    Scadenza DATE, --NOT NULL,
+    Saldo FLOAT,
+    Plafond FLOAT,
+    TipoCarta BOOLEAN, -- DA RIVEDERE
+    NumeroConto VARCHAR(16),
 
     CONSTRAINT PK_CARTA PRIMARY KEY (NumeroCarta),
-    CONSTRAINT FK_CONTO FOREIGN KEY (NumeroConto) REFERENCES a.CONTO(NumeroConto)
+    CONSTRAINT FK_CONTO FOREIGN KEY (NumeroConto) REFERENCES smu.CONTO(NumeroConto)
 );
 
 
 
-CREATE TABLE a.SPESE_PROGRAMMATE(
+CREATE TABLE smu.SPESE_PROGRAMMATE(
     IdSpesa SERIAL,
-    Descrizione varchar(64),
-    Periodicita varchar(16),
-    DataScadenza date,
-    Importo integer,
-    IBAN_Destinatario varchar(16),
-    NumeroCarta varchar(16),
+    Descrizione VARCHAR(64),
+    Periodicita VARCHAR(16),
+    DataScadenza DATE,
+    Importo INTEGER,
+    Destinatario VARCHAR(255),
+    NumeroCarta VARCHAR(16),
 
     CONSTRAINT PK_SPESA PRIMARY KEY (IdSpesa),
-    CONSTRAINT FK_CARTA FOREIGN KEY(NumeroCarta) REFERENCES a.CARTA(NumeroCarta) ON DELETE CASCADE
+    CONSTRAINT FK_CARTA FOREIGN KEY(NumeroCarta) REFERENCES smu.CARTA(NumeroCarta) ON DELETE CASCADE
 );
 
 
-CREATE TABLE a.PORTAFOGLIO(
-    IdPortafoglio serial,
-    NomePortafoglio varchar(32),
-    Saldo float, --NOT NULL,
+CREATE TABLE smu.PORTAFOGLIO(
+    IdPortafoglio SERIAL,
+    NomePortafoglio VARCHAR(32),
+    Saldo FLOAT, --NOT NULL,
 
     CONSTRAINT PK_PORTAFOGLIO PRIMARY KEY (IdPortafoglio)
 );
 
-CREATE TABLE a.ASSOCIAZIONE (
-    IdPortafoglio integer,
-    NumeroCarta varchar(16),
+CREATE TABLE smu.ASSOCIAZIONE(
+    IdPortafoglio INTEGER,
+    NumeroCarta VARCHAR(16),
 
-    CONSTRAINT FK_CARTA FOREIGN KEY(NumeroCarta) REFERENCES a.CARTA(NumeroCarta) ON DELETE CASCADE,
-    CONSTRAINT FK_PORTAFOGLIO FOREIGN KEY(IdPortafoglio) REFERENCES a.PORTAFOGLIO(IdPortafoglio) ON DELETE CASCADE
+    CONSTRAINT FK_CARTA FOREIGN KEY(NumeroCarta) REFERENCES smu.CARTA(NumeroCarta) ON DELETE CASCADE,
+    CONSTRAINT FK_PORTAFOGLIO FOREIGN KEY(IdPortafoglio) REFERENCES smu.PORTAFOGLIO(IdPortafoglio) ON DELETE CASCADE
 );
 
-CREATE TABLE a.TRANSAZIONE(
+CREATE TABLE smu.CATEGORIA(
+    Nome VARCHAR(32),
+    ParolaChiave VARCHAR(32),
+
+    CONSTRAINT PK_CATEGORIA PRIMARY KEY(Nome)
+);
+
+CREATE TABLE smu.TRANSAZIONE(
     CRO INTEGER,
-    Importo float,
-    DataTransazione date, --NOT NULL,
-    Ora time,
-    Causale varchar(50),
-    Categoria varchar(16), -- NOT NULL,
+    Importo FLOAT,
+    Data DATE, --NOT NULL,
+    Ora TIME,
+    Causale VARCHAR(128),
     TipoTransazione BOOLEAN,
-    Mittente varchar(32),
-    IBAN_destinatario varchar(16),
-    NumeroCarta varchar(16),
+    Mittente VARCHAR(32),
+    Destinatario VARCHAR(255),
+    NumeroCarta VARCHAR(16),
+    NomeCategoria VARCHAR(32),
 
 
     CONSTRAINT PK_TRANSAZIONE_ENTRATA PRIMARY KEY (CRO),
-    CONSTRAINT FK_CARTA_CREDITO FOREIGN KEY(NumeroCarta) REFERENCES a.CARTA(NumeroCarta) ON DELETE CASCADE,
+    CONSTRAINT FK_CARTA_CREDITO FOREIGN KEY(NumeroCarta) REFERENCES smu.CARTA(NumeroCarta) ON DELETE CASCADE,
+    CONSTRAINT FK_CATEGORIA FOREIGN KEY (NomeCategoria)REFERENCES smu.CATEGORIA(Nome) ON DELETE CASCADE,
     CONSTRAINT Importo CHECK(Importo>0)
 
 );
