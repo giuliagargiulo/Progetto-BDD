@@ -57,7 +57,7 @@ CREATE TABLE smu.SPESE_PROGRAMMATE(
     Descrizione VARCHAR(64),
     Periodicita VARCHAR(16),
     DataScadenza DATE,
-    Importo INTEGER,
+    Importo FLOAT,
     Destinatario VARCHAR(255),
     NumeroCarta VARCHAR(16),
 
@@ -95,16 +95,14 @@ CREATE TABLE smu.TRANSAZIONE(
     Data DATE, --NOT NULL,
     Ora TIME,
     Causale VARCHAR(128),
-    TipoTransazione BOOLEAN,
+    Tipo VARCHAR(10),
     Mittente VARCHAR(32),
     Destinatario VARCHAR(255),
     NumeroCarta VARCHAR(16),
     NomeCategoria VARCHAR(32),
 
-
     CONSTRAINT PK_TRANSAZIONE_ENTRATA PRIMARY KEY (CRO),
     CONSTRAINT FK_CARTA_CREDITO FOREIGN KEY(NumeroCarta) REFERENCES smu.CARTA(NumeroCarta) ON DELETE CASCADE,
-    CONSTRAINT FK_CATEGORIA FOREIGN KEY (NomeCategoria)REFERENCES smu.CATEGORIA(Nome) ON DELETE CASCADE,
-    CONSTRAINT Importo CHECK(Importo>0)
+    CONSTRAINT FK_CATEGORIA FOREIGN KEY (NomeCategoria)REFERENCES smu.CATEGORIA(Nome) ON DELETE CASCADE
 
 );
