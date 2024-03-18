@@ -1,14 +1,39 @@
 
--- Trigger che imposta l'importo delle transazioni in uscita a negativo.
+-- Trigger che aggiorna il valore del saldo e del conto a seguito di una determinata transazione.
 
 CREATE OR REPLACE FUNCTION smu.triggerTransazione() RETURNS TRIGGER AS
 $$
     BEGIN
+       -- imposta l'importo delle transazioni in uscita a negativo.
         IF NEW.Tipo = 'Uscita' THEN
             UPDATE smu.Transazione
             SET Importo = -(NEW.Importo)
             WHERE CRO = NEW.CRO;
         END IF;
+
+        --aggiorna il saldo della carta.
+        UPDATE smu.Carta
+        SET Saldo = Saldo + (
+            SELECT T.Importo
+                FROM smu.Transazione AS T
+                WHERE T.CRO = NEW.CRO
+            )
+        WHERE NumeroCarta = NEW.NumeroCarta;
+
+
+        --aggiorna il saldo del conto.
+        UPDATE smu.Conto
+        SET Saldo = Saldo + (
+             SELECT T.Importo
+                FROM smu.Transazione AS T
+                WHERE  T.CRO = NEW.CRO
+             )
+        WHERE NumeroConto = (
+             SELECT Ca.NumeroConto
+                 FROM smu.Carta AS Ca
+                 WHERE Ca.NumeroCarta = NEW.NumeroCarta
+            );
+
         RETURN NEW;
     END;
 $$ LANGUAGE plpgsql;
@@ -20,42 +45,4 @@ CREATE OR REPLACE TRIGGER modificaImportoTransazione
 
 
 
--- Trigger che aggiorna il saldo della carta e del conto dopo una transasione in entrata o uscita.
 
-CREATE OR REPLACE FUNCTION smu.triggerSaldo() RETURNS TRIGGER AS
-$$
-    BEGIN
-        IF NEW.Tipo = 'Uscita' THEN
-            UPDATE smu.Carta
-            SET Saldo = Saldo - NEW.Importo
-            WHERE NumeroCarta = NEW.NumeroCarta;
-
-            UPDATE smu.Conto
-            SET Saldo = Saldo - NEW.Importo
-            WHERE NumeroConto = (
-                SELECT C.NumeroConto
-                FROM (smu.Transazione AS T JOIN smu.Carta AS CA ON CA.NumeroCarta = T.NumeroCarta) JOIN smu.Conto AS C ON C.NumeroConto = CA.NumeroConto
-                WHERE CA.NumeroCarta = NEW.NumeroCarta
-                );
-        ELSE
-            UPDATE smu.Carta
-                SET Saldo = Saldo + NEW.Importo
-                WHERE NumeroCarta = NEW.NumeroCarta;
-
-            UPDATE smu.Conto
-            SET Saldo = Saldo + NEW.Importo
-            WHERE NumeroConto = (
-                SELECT C.NumeroConto
-                FROM (smu.Transazione AS T JOIN smu.Carta AS CA ON CA.NumeroCarta = T.NumeroCarta) JOIN smu.Conto AS C ON C.NumeroConto = CA.NumeroConto
-                WHERE CA.NumeroCarta = NEW.NumeroCarta
-                );
-        END IF;
-
-        RETURN NEW;
-    END;
-$$ LANGUAGE plpgsql;
-
-
-CREATE OR REPLACE TRIGGER modificaSaldo
-    AFTER INSERT ON smu.Transazione
-    FOR EACH ROW EXECUTE FUNCTION smu.triggerSaldo();

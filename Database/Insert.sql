@@ -21,7 +21,7 @@ INSERT INTO smu.Portafoglio(idportafoglio) VALUES(3);
 
 
 
-INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(1,10,'10', 'Entrata');
+
 INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(2,200,'10', 'Entrata');
 INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(3,45,'10', 'Entrata');
 INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(4,5,'20', 'Uscita');
