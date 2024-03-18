@@ -22,7 +22,7 @@ $$
 
 
         --aggiorna il saldo del conto.
-        UPDATE smu.Conto
+        UPDATE smu.ContoCorrente
         SET Saldo = Saldo + (
              SELECT T.Importo
                 FROM smu.Transazione AS T

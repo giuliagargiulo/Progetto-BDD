@@ -6,7 +6,7 @@ INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGru
 INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo)VALUES ('MirGae', 'Miriam', 'Gaetano', '3316581941', 'miriam.gaetano@studenti.unina.it', 'Password2', 2);
 
 
-INSERT INTO smu.Conto(numeroconto,saldo) VALUES(1, 10000);
+INSERT INTO smu.ContoCorrente(numeroconto,saldo) VALUES(1, 10000);
 
 INSERT INTO smu.CARTA(numerocarta,saldo, numeroconto)VALUES ('10', 100, 1);
 INSERT INTO smu.CARTA(numerocarta,saldo)VALUES ('20', 1003);
