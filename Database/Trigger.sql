@@ -1,6 +1,4 @@
 
-<<<<<<< HEAD
-=======
 -- Trigger che aggiorna il valore del saldo e del conto a seguito di una determinata transazione.
 
 CREATE OR REPLACE FUNCTION smu.triggerTransazione() RETURNS TRIGGER AS
@@ -45,7 +43,3 @@ CREATE OR REPLACE TRIGGER modificaImportoTransazione
     AFTER INSERT ON smu.Transazione
     FOR EACH ROW EXECUTE FUNCTION smu.triggerTransazione();
 
-
-
-
->>>>>>> 1584ebe3cae528ffe224ed11af6efb01d6671304
