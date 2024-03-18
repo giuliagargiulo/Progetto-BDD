@@ -6,8 +6,6 @@ INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGru
 INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo)VALUES ('MirGae', 'Miriam', 'Gaetano', '+393316581941', 'miriam.gaetano@studenti.unina.it', 'Password2', 2);
 
 
-INSERT INTO smu.ContoCorrente(numeroconto,saldo) VALUES(1, 10000);
-
 INSERT INTO smu.CARTA(numerocarta,saldo, numeroconto)VALUES ('1000281829394444', 100, 1);
 INSERT INTO smu.CARTA(numerocarta,saldo)VALUES ('1234567890123456', 1003);
 INSERT INTO smu.CARTA(numerocarta,saldo)VALUES ('30', 10032);
@@ -21,8 +19,13 @@ INSERT INTO smu.Portafoglio(idportafoglio) VALUES(3);
 
 
 
+<<<<<<< HEAD
 INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(11111111111,10,'1000281829394444', 'Entrata');
 INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(2,200,'1000281829394444', 'Entrata');
+=======
+
+INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(2,200,'10', 'Entrata');
+>>>>>>> 1584ebe3cae528ffe224ed11af6efb01d6671304
 INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(3,45,'10', 'Entrata');
 INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(44444444444,5,'1234567890123456', 'Uscita');
 INSERT INTO smu.Transazione(cro, importo, numerocarta, Tipo) VALUES(56666666666,200,'1234567890123456', 'Uscita');
