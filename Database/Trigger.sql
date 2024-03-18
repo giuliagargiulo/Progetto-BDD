@@ -3,7 +3,6 @@
 
 CREATE OR REPLACE FUNCTION smu.triggerTransazione() RETURNS TRIGGER AS
 $$
-    DECLARE
     BEGIN
         IF NEW.Tipo = 'Uscita' THEN
             UPDATE smu.Transazione
@@ -25,8 +24,6 @@ CREATE OR REPLACE TRIGGER modificaImportoTransazione
 
 CREATE OR REPLACE FUNCTION smu.triggerSaldo() RETURNS TRIGGER AS
 $$
-    DECLARE
-
     BEGIN
         IF NEW.Tipo = 'Uscita' THEN
             UPDATE smu.Carta
