@@ -17,7 +17,7 @@ INSERT INTO smu.ContoCorrente(numeroconto,saldo) VALUES(1, 10000);
 INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5355284927482884', 'Poste Pay Evolution', 100, '01-12-2025', 13.00, 'Credito', 14000.00, 1);
 INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5337589274884783', 'Carta di Giulia', 345, '01-08-2024', 500.00, 'Credito', 1000.00, 1);
 INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('1234567890123456', 'Visa', 789, '01-05-2023', 200.00, 'Credito', 500.00, 1);
-INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('4444333322221111', 'Mastercard', 222, '11-2026', 1000.00, 'Credito', 2000.00, 4);
+INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('9999000011112222', 'Mastercard', 222, '11-2026', 1000.00, 'Credito', 2000.00, 1);
 INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5555666677778888', 'Visa', 333, '07-2025', 700.00, 'Debito', NULL, 5);
 INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('6666999988887777', 'Carta Oro', 444, '04-2024', 1500.00, 'Debito', NULL, 6);
 INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('1515151515151515', 'Carta Viaggio', 888, '06-2027', 250.00, 'Debito', NULL, 10);
@@ -51,6 +51,7 @@ INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(14, 'A
 INSERT INTO smu.Categoria(nome, parolachiave) VALUES( 'Cibo', 'Supermercato');
 INSERT INTO smu.Categoria(nome, parolachiave) VALUES( 'Cibo', 'Ristorante');
 INSERT INTO smu.Categoria(nome, parolachiave) VALUES('Rimborsi', 'Rimborso');
+
 
 
 -- Transazioni
