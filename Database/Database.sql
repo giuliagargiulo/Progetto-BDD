@@ -40,8 +40,8 @@ CREATE TABLE smu.ContoCorrente(
     BIC VARCHAR(11),
     Username VARCHAR(32),
 
-    CONSTRAINT PK_CONTO PRIMARY KEY (NumeroConto),
-    CONSTRAINT FK_UTENTE FOREIGN KEY(Username) REFERENCES smu.Utente(Username) ON DELETE CASCADE
+    CONSTRAINT PK_Conto PRIMARY KEY (NumeroConto),
+    CONSTRAINT FK_Utente FOREIGN KEY(Username) REFERENCES smu.Utente(Username) ON DELETE CASCADE
 );
 
 CREATE DOMAIN smu.TipoNumeroCarta AS VARCHAR(16) CHECK(VALUE ~ '[0-9]{16}');
@@ -57,8 +57,8 @@ CREATE TABLE smu.Carta(
     TipoCarta BOOLEAN, -- DA RIVEDERE
     NumeroConto VARCHAR(16),
 
-    CONSTRAINT PK_CARTA PRIMARY KEY (NumeroCarta),
-    CONSTRAINT FK_CONTO FOREIGN KEY (NumeroConto) REFERENCES smu.ContoCorrente(NumeroConto)
+    CONSTRAINT PK_Carta PRIMARY KEY (NumeroCarta),
+    CONSTRAINT FK_Conto FOREIGN KEY (NumeroConto) REFERENCES smu.ContoCorrente(NumeroConto)
 );
 
 
@@ -71,8 +71,8 @@ CREATE TABLE smu.SpeseProgrammate(
     Destinatario VARCHAR(32),
     NumeroCarta smu.TipoNumeroCarta,
 
-    CONSTRAINT PK_SPESA PRIMARY KEY (IdSpesa),
-    CONSTRAINT FK_CARTA FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE
+    CONSTRAINT PK_Spesa PRIMARY KEY (IdSpesa),
+    CONSTRAINT FK_Carta FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE
 );
 
 
@@ -81,15 +81,15 @@ CREATE TABLE smu.Portafoglio(
     NomePortafoglio VARCHAR(32),
     Saldo FLOAT, --NOT NULL,
 
-    CONSTRAINT PK_PORTAFOGLIO PRIMARY KEY (IdPortafoglio)
+    CONSTRAINT PK_Portafoglio PRIMARY KEY (IdPortafoglio)
 );
 
 CREATE TABLE smu.Associazione(
     IdPortafoglio INTEGER,
     NumeroCarta VARCHAR(16),
 
-    CONSTRAINT FK_CARTA FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE,
-    CONSTRAINT FK_PORTAFOGLIO FOREIGN KEY(IdPortafoglio) REFERENCES smu.Portafoglio(IdPortafoglio) ON DELETE CASCADE
+    CONSTRAINT FK_Carta FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE,
+    CONSTRAINT FK_Portafoglio FOREIGN KEY(IdPortafoglio) REFERENCES smu.Portafoglio(IdPortafoglio) ON DELETE CASCADE
 );
 
 CREATE TABLE smu.Categoria(
@@ -112,7 +112,7 @@ CREATE TABLE smu.Transazione(
     NumeroCarta VARCHAR(16),
     NomeCategoria VARCHAR(32),
 
-    CONSTRAINT PK_TRANSAZIONE_ENTRATA PRIMARY KEY (CRO),
-    CONSTRAINT FK_CARTA_CREDITO FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE
+    CONSTRAINT PK_TransazioneEntrata PRIMARY KEY (CRO),
+    CONSTRAINT FK_CartaCredito FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE
 
 );
