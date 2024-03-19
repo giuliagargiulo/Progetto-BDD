@@ -1,7 +1,6 @@
 DROP SCHEMA IF EXISTS smu CASCADE;
 CREATE SCHEMA smu;
 
-
 CREATE TABLE smu.Famiglia(
     IdGruppo SERIAL,
     NomeGruppo VARCHAR(32),
