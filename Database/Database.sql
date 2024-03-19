@@ -46,6 +46,7 @@ CREATE TABLE smu.ContoCorrente(
 
 CREATE DOMAIN smu.TipoNumeroCarta AS VARCHAR(16) CHECK(VALUE ~ '[0-9]{16}');
 CREATE DOMAIN smu.TipoCVV AS VARCHAR(3) CHECK(VALUE ~ '[0-9]{3}');
+CREATE TYPE smu.TipoCarta AS ENUM('Credito', 'Debito');
 
 CREATE TABLE smu.Carta(
     NumeroCarta smu.TipoNumeroCarta,
@@ -54,7 +55,7 @@ CREATE TABLE smu.Carta(
     Scadenza DATE, --NOT NULL,
     Saldo FLOAT,
     Plafond FLOAT,
-    TipoCarta BOOLEAN, -- DA RIVEDERE
+    TipoCarta smu.TipoCarta , -- DA RIVEDERE
     NumeroConto VARCHAR(16),
 
     CONSTRAINT PK_Carta PRIMARY KEY (NumeroCarta),
