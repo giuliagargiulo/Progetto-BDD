@@ -50,29 +50,23 @@ BEGIN
     FOR parola IN (SELECT C.ParolaChiave FROM smu.Categoria AS C)
         LOOP
 
-            IF NEW.Mittente IS NOT NULL THEN
-                IF NEW.Mittente LIKE '%' || parola || '%' THEN
-                    UPDATE smu.Transazione
-                    SET NomeCategoria = (SELECT C.Nome
-                                         FROM smu.Categoria AS C
-                                         WHERE C.ParolaChiave = parola)
-                    WHERE CRO = NEW.CRO;
-                END IF;
-            ELSE IF NEW.Destinatario LIKE '%' || parola || '%' THEN
-                    UPDATE smu.Transazione
-                    SET NomeCategoria = (SELECT C.Nome
-                                         FROM smu.Categoria AS C
-                                         WHERE C.ParolaChiave = parola)
-                    WHERE CRO = NEW.CRO;
-                END IF;
+            IF NEW.Mittente LIKE '%' || parola || '%' THEN
+                UPDATE smu.Transazione
+                SET NomeCategoria = (SELECT C.Nome
+                                     FROM smu.Categoria AS C
+                                     WHERE C.ParolaChiave = parola)
+                WHERE CRO = NEW.CRO;
 
             ELSE
-                UPDATE smu.Transazione
-                SET NomeCategoria = 'Altro'
-                WHERE CRO = NEW.CRO;
-            END IF;
+                IF NEW.Destinatario LIKE '%' || parola || '%' THEN
+                    UPDATE smu.Transazione
+                    SET NomeCategoria = (SELECT C.Nome
+                                         FROM smu.Categoria AS C
+                                         WHERE C.ParolaChiave = parola)
+                    WHERE CRO = NEW.CRO;
 
-        END IF;
+                END IF;
+            END IF;
 
         END LOOP;
     RETURN NEW;
@@ -86,3 +80,20 @@ CREATE OR REPLACE TRIGGER modificaCategoriaTransazione
     FOR EACH ROW
 EXECUTE FUNCTION smu.triggerCategoria();
 
+
+
+
+CREATE OR REPLACE FUNCTION smu.triggerCategoria2() RETURNS TRIGGER AS
+$$
+BEGIN
+    UPDATE smu.Transazione
+    SET NomeCategoria = 'Altro'
+    WHERE CRO = NEW.CRO;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER categoriaAltro
+    AFTER UPDATE ON smu.transazione
+    FOR EACH ROW WHEN (NEW.NomeCategoria IS NULL)
+    EXECUTE FUNCTION smu.triggerCategoria2();
