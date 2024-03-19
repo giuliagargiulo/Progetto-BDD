@@ -89,3 +89,4 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER modificaCategoriaTransazione
     AFTER INSERT ON smu.Transazione
     FOR EACH ROW EXECUTE FUNCTION smu.triggerCategoria();
+
