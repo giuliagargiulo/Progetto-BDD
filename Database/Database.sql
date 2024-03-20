@@ -61,12 +61,14 @@ CREATE TABLE smu.Carta(
     CONSTRAINT FK_Conto FOREIGN KEY (NumeroConto) REFERENCES smu.ContoCorrente(NumeroConto)
 );
 
+CREATE TYPE smu.TipoPeriodico AS ENUM('7 giorni', '15 giorni', '1 mese', '3 mesi', '6 mesi', '12 mesi');
 
 CREATE TABLE smu.SpeseProgrammate(
     IdSpesa SERIAL,
     Descrizione VARCHAR(64),
-    Periodicita VARCHAR(16),
-    DataScadenza DATE,
+    Periodicita smu.TipoPeriodico,
+    DataScadenza TIMESTAMP, --TIMESTAMP è un tipo che mi dice data e ora
+    DataFineProgrammazione DATE,    --not null
     Importo FLOAT,
     Destinatario VARCHAR(32),
     NumeroCarta smu.TipoNumeroCarta,
