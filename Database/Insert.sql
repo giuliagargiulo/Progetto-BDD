@@ -31,7 +31,6 @@ INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafon
 
 -- Portafogli
 INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(1, 'Casa', 54323.00);
-INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(1, 'Casa Vacanze', 54323.00);
 INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(2, 'Auto', 2350.00);
 INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(3, 'Stipendio', 897.50);
 INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(4, 'Emergenze', 1500.00);
@@ -45,7 +44,7 @@ INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(11, 'R
 INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(12, 'Hobby', 300.00);
 INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(13, 'Alimentari', 400.00);
 INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(14, 'Assicurazione', 1200.00);
-
+INSERT INTO smu.Portafoglio(IdPortafoglio, NomePortafoglio, Saldo) VALUES(15, 'Casa Vacanze', 54323.00);
 
 -- Categorie
 INSERT INTO smu.Categoria(nome, parolachiave) VALUES( 'Cibo', 'Supermercato');
