@@ -1,4 +1,4 @@
--- Trigger che aggiorna il valore del saldo e del conto a seguito di una determinata transazione.
+-- 1. Trigger che aggiorna il valore del saldo e del conto a seguito di una determinata transazione.
 
 CREATE OR REPLACE FUNCTION smu.triggerTransazione() RETURNS TRIGGER AS
 $$
@@ -39,7 +39,7 @@ CREATE OR REPLACE TRIGGER modificaImportoTransazione
 EXECUTE FUNCTION smu.triggerTransazione();
 
 
--- Trigger che aggiunge la categoria ad una transazione in base alla presenza di determinate parole chiave.
+-- 2. Trigger che aggiunge la categoria ad una transazione in base alla presenza di determinate parole chiave.
 
 CREATE OR REPLACE FUNCTION smu.triggerCategoria() RETURNS TRIGGER AS
 $$
@@ -75,3 +75,60 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER modificaCategoriaTransazione
     AFTER INSERT ON smu.Transazione
     FOR EACH ROW EXECUTE FUNCTION smu.triggerCategoria();
+
+
+-- 3. Trigger che prima dell'inserimento di una transazione controlli che:
+-- se è di tipo 'Uscita' allora Mittente è NULL, se è di tipo 'Entrata' allora Destinatario è NULL.
+
+CREATE OR REPLACE FUNCTION smu.triggerTipoTransazione() RETURNS TRIGGER AS
+    $$
+    BEGIN
+        IF NEW.Tipo = 'Uscita' AND NEW.Mittente IS NOT NULL THEN
+            RAISE EXCEPTION 'ERRORE: Mittente non nullo in una transazione in uscita';
+        END IF;
+
+        IF NEW.Tipo = 'Entrata' AND NEW.Destinatario IS NOT NULL THEN
+            RAISE EXCEPTION 'ERRORE: Destinatario non nullo in una transazione in entrata';
+        END IF;
+
+        RETURN NEW;
+
+    END;
+    $$LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER ControlloTipoTransazione
+    BEFORE INSERT ON smu.Transazione
+    FOR EACH ROW EXECUTE FUNCTION smu.triggerTipoTransazione();
+
+-- INSERT PER TESTARE IL TRIGGER 3
+INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 12345678910, 20.00, '2024-03-19', '09:45:00', 'Acquisto online', 'Entrata', NULL, 'E-commerce', '1234567890123456', NULL);
+INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 46173636910, 50.00, '2024-01-29', '13:35:00', 'Acquisto online', 'Uscita', 'Amazon', NULL, '1234567890123456', NULL);
+
+
+-- 4. Trigger che prima dell'inserimento di una carta controlli che:
+-- se il tipo è 'Debito' allora plafond è NULL, se il tipo è 'Credito' allora Plafond è NOT NULL.
+
+CREATE OR REPLACE FUNCTION smu.triggerTipoCarta() RETURNS TRIGGER AS
+$$
+    BEGIN
+        IF NEW.TipoCarta = 'Debito' AND NEW.Plafond IS NOT NULL THEN
+            RAISE EXCEPTION 'ERRORE: Plafond non nullo in una carta di debito';
+        END IF;
+
+        IF NEW.TipoCarta = 'Credito' AND NEW.Plafond IS NULL THEN
+            RAISE EXCEPTION 'ERRORE: Plafond nullo in una carta di credito';
+        END IF;
+
+        RETURN NEW;
+
+    END;
+$$LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER ControlloTipoCarta
+    BEFORE INSERT ON smu.Carta
+    FOR EACH ROW EXECUTE FUNCTION smu.triggerTipoCarta();
+
+-- INSERT PER TESTARE IL TRIGGER 4
+
+INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5355284922617884', 'Poste Pay Evolution', 100, '2025-12-31', 13.00, 'Credito', NULL, 1);
+INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5334628274884783', 'Carta prepagata', 345, '2024-08-31', 500.00, 'Debito', 1000.00, 1);

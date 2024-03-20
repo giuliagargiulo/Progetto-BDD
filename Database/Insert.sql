@@ -9,9 +9,8 @@ INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGru
 INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo)VALUES ('MirGae', 'Miriam', 'Gaetano', '+393316581941', 'miriam.gaetano@studenti.unina.it', 'Password2', 2);
 
 
--- Conti Correnti
-INSERT INTO smu.ContoCorrente(numeroconto,saldo) VALUES(1, 10000);
-
+-- Conti Correnti da fare
+INSERT INTO smu.ContoCorrente(NumeroConto,Saldo) VALUES(1, 10000);
 
 --Carte
 INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5355284927482884', 'Poste Pay Evolution', 100, '2025-12-31', 13.00, 'Credito', 14000.00, 1);
@@ -73,11 +72,10 @@ INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, De
 INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(48121620241, 90.00, '2024-03-14', '12:15:30', 'Rimborso assicurazione', 'Entrata', 'Assicurazione Generali', NULL, '5555666677778888', NULL);
 INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(48132819381, 45.00, '2024-01-15', '13:20:30', 'Stipendio', 'Entrata', 'Agenzia', NULL, '5355284927482884', NULL);
 INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(27121273241, 600.00, '2024-06-30', '10:15:30', 'Pensione', 'Entrata', 'INPS', NULL, '5555666677778888', NULL);
-
-
+INSERT INTO smu.Transazione(cro, importo, data, ora, causale, tipo, mittente, destinatario, numerocarta, nomecategoria)VALUES( 12345678910, 20.00, '2024-03-19', '09:45:00', 'Acquisto online', 'Entrata', 'Ecommerce', 'E-commerce', '1234567890123456', NULL)
 
 -- Associazioni
-INSERT INTO smu.Associazione(idportafoglio, numerocarta)VALUES (1, '10');
-INSERT INTO smu.Associazione(idportafoglio, numerocarta)VALUES (2, '20');
-INSERT INTO smu.Associazione(idportafoglio, numerocarta)VALUES (3, '30');
-INSERT INTO smu.Associazione(idportafoglio, numerocarta)VALUES(3, '40');
+INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (1, '5355284927482884');
+INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (2, '5337589274884783');
+INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (3, '1234567890123456');
+INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES(3, '5355284927482884');

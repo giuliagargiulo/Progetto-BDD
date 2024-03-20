@@ -10,7 +10,7 @@ CREATE TABLE smu.Famiglia(
 );
 
 CREATE DOMAIN smu.TipoTelefono AS VARCHAR(13) CHECK (VALUE ~ '\+[0-9]{2}[0-9]{10}');
-CREATE DOMAIN smu.TipoEmail AS VARCHAR(64) CHECK (VALUE ~ '[a-zA-Z0-9._%+\-]@[a-zA-Z0-9.-]\.[a-zA-Z]{2,4}');
+CREATE DOMAIN smu.TipoEmail AS VARCHAR(128) CHECK (VALUE ~ '[a-zA-Z0-9._%+\-]@[a-zA-Z0-9.-]\d*.*[A-Za-z]{2,4}');
 CREATE DOMAIN smu.TipoPassword AS VARCHAR(32) CHECK (VALUE ~ '[a-zA-Z0-9! " # $ % & ( ) * + , - . / : ; < = > ? @ \[ \] \ ^ _` \{ | \} ~ ]{8,32}');
 
 
