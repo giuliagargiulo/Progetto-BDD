@@ -103,8 +103,8 @@ CREATE OR REPLACE TRIGGER ControlloTipoTransazione
     FOR EACH ROW EXECUTE FUNCTION smu.triggerTipoTransazione();
 
 -- INSERT PER TESTARE IL TRIGGER 3
-INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 12345678910, 20.00, '2024-03-19', '09:45:00', 'Acquisto online', 'Entrata', NULL, 'E-commerce', '1234567890123456', NULL);
-INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 46173636910, 50.00, '2024-01-29', '13:35:00', 'Acquisto online', 'Uscita', 'Amazon', NULL, '1234567890123456', NULL);
+--INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 12345678910, 20.00, '2024-03-19', '09:45:00', 'Acquisto online', 'Entrata', NULL, 'E-commerce', '1234567890123456', NULL);
+--INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 46173636910, 50.00, '2024-01-29', '13:35:00', 'Acquisto online', 'Uscita', 'Amazon', NULL, '1234567890123456', NULL);
 
 
 
@@ -134,8 +134,8 @@ CREATE OR REPLACE TRIGGER ControlloTipoCarta
 
 -- INSERT PER TESTARE IL TRIGGER 4
 
-INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5355284922617884', 'Poste Pay Evolution', 100, '2025-12-31', 13.00, 'Credito', NULL, 1);
-INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5334628274884783', 'Carta prepagata', 345, '2024-08-31', 500.00, 'Debito', 1000.00, 1);
+--INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5355284922617884', 'Poste Pay Evolution', 100, '2025-12-31', 13.00, 'Credito', NULL, 1);
+--INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5334628274884783', 'Carta prepagata', 345, '2024-08-31', 500.00, 'Debito', 1000.00, 1);
 
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -144,17 +144,41 @@ INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafon
 
 CREATE OR REPLACE FUNCTION smu.triggerSpesaProgrammata() RETURNS TRIGGER AS
 $$
-    DECLARE
-        DataAttuale TIMESTAMP := CURRENT_TIMESTAMP;
-    BEGIN
-        IF NEW.Periodicita = '7 giorni' THEN
-            UPDATE smu.SpeseProgrammate
-            SET DataScadenza =
-        END IF;
-
-    END;
+BEGIN
+    IF NEW.Periodicita = '7 giorni' THEN
+        UPDATE smu.SpeseProgrammate
+        SET DataScadenza = DataScadenza + INTERVAL '7 days';
+    END IF;
+    IF NEW.Periodicita = '15 giorni' THEN
+        UPDATE smu.SpeseProgrammate
+        SET DataScadenza = DataScadenza + INTERVAL '15 days';
+    END IF;
+    IF NEW.Periodicita = '1 mese' THEN
+        UPDATE smu.SpeseProgrammate
+        SET DataScadenza = DataScadenza + INTERVAL '1 month';
+    END IF;
+    IF NEW.Periodicita = '3 mesi' THEN
+        UPDATE smu.SpeseProgrammate
+        SET DataScadenza = DataScadenza + INTERVAL '3 months';
+    END IF;
+    IF NEW.Periodicita = '6 mesi' THEN
+        UPDATE smu.SpeseProgrammate
+        SET DataScadenza = DataScadenza + INTERVAL '6 months';
+    END IF;
+    IF NEW.Periodicita = '12 mesi' THEN
+        UPDATE smu.SpeseProgrammate
+        SET DataScadenza = DataScadenza + INTERVAL '12 months';
+    END IF;
+END;
 $$LANGUAGE plpgsql;
+
+
+SELECT cron.schedule('0 0 */7 * *', 'CALL triggerSpesaProgrammata()');
+
 
 CREATE OR REPLACE TRIGGER EsecuzioneSpesaProgrammata
     AFTER INSERT ON smu.SpeseProgrammate
-    FOR EACH ROW EXECUTE FUNCTION smu.triggerSpesaProgrammata();
+    FOR EACH ROW
+        WHEN (DataScadenza = CURRENT_TIMESTAMP)
+    EXECUTE FUNCTION smu.triggerSpesaProgrammata();
+
