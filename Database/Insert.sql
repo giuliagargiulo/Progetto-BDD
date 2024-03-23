@@ -73,7 +73,7 @@ INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, De
 INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(48121620241, 90.00, '2024-03-14', '12:15:30', 'Rimborso assicurazione', 'Entrata', 'Assicurazione Generali', NULL, '5555666677778888', NULL);
 INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(48132819381, 45.00, '2024-01-15', '13:20:30', 'Stipendio', 'Entrata', 'Agenzia', NULL, '5355284927482884', NULL);
 INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(27121273241, 600.00, '2024-06-30', '10:15:30', 'Pensione', 'Entrata', 'INPS', NULL, '5555666677778888', NULL);
-INSERT INTO smu.Transazione(cro, importo, data, ora, causale, tipo, mittente, destinatario, numerocarta, nomecategoria) VALUES(12345678910, 20.00, '2024-03-19', '09:45:00', 'Acquisto online', 'Entrata', 'Ecommerce', 'E-commerce', '1234567890123456', NULL);
+
 
 -- Associazioni
 INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (1, '5355284927482884');
@@ -83,7 +83,7 @@ INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (3, '535528492748
 
 
 --Programmazione
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(1, 'Paghetta Armando', '15 giorni mese', '2024-03-21 15:30:00', '2028-07-30', 20.00, 'Armando figlio', '5355284927482884');
+INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(1, 'Paghetta Armando', '15 giorni', '2024-03-21 15:30:00', '2028-07-30', 20.00, 'Armando figlio', '5355284927482884');
 INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(2, 'Affitto Mensile', '1 mese', '2024-04-05 12:00:00', '2025-04-05', 800.00, 'Proprietario', '5555666677778888');
 INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(3, 'Abbonamento Palestra', '12 mesi', '2024-03-28 18:00:00', '2025-03-28', 40.00, 'Palestra XYZ', '9876543210987654');
 INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(4, 'Fornitura Gas', '3 mesi', '2024-04-15 10:00:00', '2025-04-15', 120.00, 'GasCo', '1515151665151515');
