@@ -67,8 +67,8 @@ CREATE TABLE smu.SpeseProgrammate(
     IdSpesa SERIAL,
     Descrizione VARCHAR(64),
     Periodicita smu.TipoPeriodico,
-    DataScadenza TIMESTAMP,  --TIMESTAMP è un tipo che mi dice data e ora
-    DataFineRinnovo DATE,    --not null
+    DataScadenza DATE,
+    DataFineRinnovo DATE,   --not null
     Importo FLOAT,
     Destinatario VARCHAR(32),
     NumeroCarta smu.TipoNumeroCarta,

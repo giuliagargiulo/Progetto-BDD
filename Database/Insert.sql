@@ -58,8 +58,8 @@ INSERT INTO smu.Categoria(nome, parolachiave) VALUES('Acquisti', 'Online');
 
 
 -- Transazioni
-INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(14728139340,50,'2023-03-21', '13:21:30', 'Rimborso', 'Entrata', 'Rimborso Amazon', NULL, '5355284927482884', NULL);
-INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(15738299391,35.40,'2024-01-01', '15:25:36', 'Pagamento supermercato', 'Uscita', NULL,'Supermercato Deco', '5337589274884783', NULL);
+INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(14728139340, 50.00, '2023-03-21', '13:21:30', 'Rimborso', 'Entrata', 'Rimborso Amazon', NULL, '5355284927482884', NULL);
+INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(15738299391, 35.40, '2024-01-01', '15:25:36', 'Pagamento supermercato', 'Uscita', NULL,'Supermercato Deco', '5337589274884783', NULL);
 INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(12345678910, 20.00, '2024-03-19', '09:45:00', 'Acquisto online', 'Uscita', NULL, 'E-commerce', '1234567890123456', NULL);
 INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(98765432109, 75.80, '2024-03-18', '17:30:45', 'Pagamento bollette', 'Uscita', NULL, 'Fornitore energia', '5355284927482884', NULL);
 INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria) VALUES(24681012131, 42.30, '2024-03-17', '11:10:55', 'Pagamento affitto', 'Uscita', NULL, 'Proprietario immobile', '1234567890123456', NULL);
@@ -83,23 +83,14 @@ INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (3, '535528492748
 
 
 --Programmazione
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(1, 'Paghetta Armando', '15 giorni', '2024-03-21 15:30:00', '2028-07-30', 20.00, 'Armando figlio', '5355284927482884');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(2, 'Affitto Mensile', '1 mese', '2024-04-05 12:00:00', '2025-04-05', 800.00, 'Proprietario', '5555666677778888');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(3, 'Abbonamento Palestra', '12 mesi', '2024-03-28 18:00:00', '2025-03-28', 40.00, 'Palestra XYZ', '9876543210987654');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(4, 'Fornitura Gas', '3 mesi', '2024-04-15 10:00:00', '2025-04-15', 120.00, 'GasCo', '1515151665151515');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(5, 'Pagamento Bolletta Elettrica', '6 mesi', '2024-04-02 08:00:00', '2024-12-02', 70.00, 'Fornitore Elettrico', '6666999988887777');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(6, 'Rata Mutuo', '1 mese', '2024-04-10 14:30:00', '2024-12-10', 1000.00, 'Banca XYZ', '1234567890123456');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(7, 'Assicurazione Auto Annuale', '12 mesi', '2024-03-31 09:00:00', '2025-03-31', 600.00, 'Assicurazioni S.p.A.', '1234567890123456');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineProgrammazione, Importo, Destinatario, NumeroCarta) VALUES(8, 'Pagamento Affitto Garage', '6 mesi', '2024-04-20 11:00:00', '2024-10-20', 150.00, 'Proprietario Garage', '1414141414141414');
+INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(1, 'Paghetta Armando', '15 giorni', '2024-03-21', '2028-07-30', 20.00, 'Armando figlio', '5355284927482884');
+INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(2, 'Affitto Mensile', '1 mese', '2024-04-05', '2025-04-05', 800.00, 'Proprietario', '5555666677778888');
+INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(3, 'Abbonamento Palestra', '12 mesi', '2024-03-28', '2025-03-28', 40.00, 'Palestra XYZ', '9876543210987654');
+INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(4, 'Fornitura Gas', '3 mesi', '2024-04-15', '2025-04-15', 120.00, 'GasCo', '1515151665151515');
+INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(5, 'Pagamento Bolletta Elettrica', '6 mesi', '2024-04-02', '2024-12-02', 70.00, 'Fornitore Elettrico', '6666999988887777');
+INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(6, 'Rata Mutuo', '1 mese', '2024-04-10', '2024-12-10', 1000.00, 'Banca XYZ', '1234567890123456');
+INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(7, 'Assicurazione Auto Annuale', '12 mesi', '2024-03-31', '2025-03-31', 600.00, 'Assicurazioni S.p.A.', '1234567890123456');
+INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(8, 'Pagamento Affitto Garage', '6 mesi', '2024-04-20', '2024-10-20', 150.00, 'Proprietario Garage', '1414141414141414');
 
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(1, 'Paghetta Armando', '15 giorni mese', '2024-03-21 15:30:00', '2028-07-30', 20.00, 'Armando figlio', '5355284927482884');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(2, 'Affitto Mensile', '1 mese', '2024-04-05 12:00:00', '2025-04-05', 800.00, 'Proprietario', '5555666677778888');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(3, 'Abbonamento Palestra', '12 mesi', '2024-03-28 18:00:00', '2025-03-28', 40.00, 'Palestra XYZ', '9876543210987654');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(4, 'Fornitura Gas', '3 mesi', '2024-04-15 10:00:00', '2025-04-15', 120.00, 'GasCo', '1515151665151515');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(5, 'Pagamento Bolletta Elettrica', '6 mesi', '2024-04-02 08:00:00', '2024-12-02', 70.00, 'Fornitore Elettrico', '6666999988887777');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(6, 'Rata Mutuo', '1 mese', '2024-04-10 14:30:00', '2024-12-10', 1000.00, 'Banca XYZ', '1234567890123456');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(7, 'Assicurazione Auto Annuale', '12 mesi', '2024-03-31 09:00:00', '2025-03-31', 600.00, 'Assicurazioni S.p.A.', '1234567890123456');
-INSERT INTO  smu.SpeseProgrammate(IdSpesa, Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES(8, 'Pagamento Affitto Garage', '6 mesi', '2024-04-20 11:00:00', '2024-10-20', 150.00, 'Proprietario Garage', '1414141414141414');
->>>>>>> 6f77441b0fab7d01f83e18f24bbe2a9cb5a27b56
 
 
