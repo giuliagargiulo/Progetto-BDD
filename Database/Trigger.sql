@@ -139,16 +139,43 @@ CREATE OR REPLACE TRIGGER ControlloTipoCarta
 
 
 ----------------------------------------------------------------------------------------------------------------------
---5. Trigger che gestisce le spese programmate
+--5. Trigger che mi genera automaticamente il valore del CRO
+
+CREATE OR REPLACE FUNCTION smu.triggerGeneraCro() RETURNS TRIGGER AS $$
+DECLARE
+    randomCro TEXT;
+BEGIN
+    -- Genera una stringa di 11 cifre casuali
+    randomCro := LPAD((random() * 99999999999)::BIGINT::TEXT, 11, '0');
+    -- Assegna la stringa di cifre casuali all'attributo CRO della nuova riga
+    NEW.CRO := randomCro;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER GeneraCro
+    BEFORE INSERT
+    ON smu.Transazione
+    FOR EACH ROW EXECUTE FUNCTION smu.triggerGeneraCro();
+
+----------------------------------------------------------------------------------------------------------------------
+--6. Trigger che gestisce le spese programmate
 --la data di scadenza si intende il momento in cui deve essere effettuato il pagamento e per la prima volta dopo l'inserimento questo dato non deve essere uguale a NULL
 
-CREATE OR REPLACE FUNCTION smu.SpesaProgrammata() RETURNS AS
+CREATE OR REPLACE PROCEDURE smu.SpesaProgrammata() AS
 $$
+    DECLARE
+    destinatarioS smu.speseprogrammate.destinatario%TYPE;
+    descrizioneS smu.speseprogrammate.descrizione%TYPE;
+    numerocartaS smu.speseprogrammate.numerocarta%TYPE;
+    importoS FLOAT := 0;
     BEGIN
-        INSERT INTO smu.Transazione VALUES(14728139341, Importo, CURRENT_DATE, CURRENT_TIME, Descrizione, 'Uscita', NULL, Destinatario, NumeroCarta, NULL)
         SELECT S.Importo, S.Descrizione, s.Destinatario, S.NumeroCarta
+        INTO importoS, descrizioneS, destinatarioS, numerocartaS
         FROM smu.SpeseProgrammate AS S
         WHERE S.DataScadenza = CURRENT_DATE;
+
+        INSERT INTO smu.Transazione(importo, data, ora, causale, tipo, mittente, destinatario, numerocarta, nomecategoria) VALUES(importoS, CURRENT_DATE, CURRENT_TIME, descrizioneS, 'Uscita', NULL, destinatarioS, NumeroCartaS, NULL);
     END;
 $$LANGUAGE plpgsql;
 
@@ -156,6 +183,6 @@ CREATE OR REPLACE TRIGGER EsecuzioneSpesaProgrammata
     AFTER INSERT ON smu.SpeseProgrammate
     FOR EACH ROW EXECUTE FUNCTION smu.SpesaProgrammata();
 
-
+----------------------------------------------------------------------------------------------------------------------
 
 

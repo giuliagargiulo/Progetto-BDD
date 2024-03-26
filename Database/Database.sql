@@ -50,11 +50,11 @@ CREATE TYPE smu.TipoCarta AS ENUM('Credito', 'Debito');
 CREATE TABLE smu.Carta(
     NumeroCarta smu.TipoNumeroCarta,
     Nome VARCHAR(32),
-    CVV smu.TipoCVV,
-    Scadenza DATE, --NOT NULL,
+    CVV smu.TipoCVV  NOT NULL,
+    Scadenza DATE  NOT NULL,
     Saldo FLOAT,
     Plafond FLOAT,
-    TipoCarta smu.TipoCarta , -- DA RIVEDERE
+    TipoCarta smu.TipoCarta,
     NumeroConto VARCHAR(16),
 
     CONSTRAINT PK_Carta PRIMARY KEY (NumeroCarta),
@@ -67,8 +67,8 @@ CREATE TABLE smu.SpeseProgrammate(
     IdSpesa SERIAL,
     Descrizione VARCHAR(64),
     Periodicita smu.TipoPeriodico,
-    DataScadenza DATE,
-    DataFineRinnovo DATE,   --not null
+    DataScadenza DATE  NOT NULL,
+    DataFineRinnovo DATE,
     Importo FLOAT,
     Destinatario VARCHAR(32),
     NumeroCarta smu.TipoNumeroCarta,
@@ -81,7 +81,7 @@ CREATE TABLE smu.SpeseProgrammate(
 CREATE TABLE smu.Portafoglio(
     IdPortafoglio SERIAL,
     NomePortafoglio VARCHAR(32),
-    Saldo FLOAT, --NOT NULL,
+    Saldo FLOAT,
 
     CONSTRAINT PK_Portafoglio PRIMARY KEY (IdPortafoglio)
 );
@@ -99,14 +99,13 @@ CREATE TABLE smu.Categoria(
     ParolaChiave VARCHAR(32)
 );
 
-CREATE DOMAIN smu.TipoCRO AS VARCHAR(11) CHECK(VALUE ~ '[0-9]{11}');
 CREATE TYPE smu.TipoTransazione AS ENUM('Entrata', 'Uscita');
 
 CREATE TABLE smu.Transazione(
-    CRO smu.TipoCRO,
-    Importo FLOAT,
-    Data DATE, --NOT NULL,
-    Ora TIME,
+    CRO VARCHAR(11),
+    Importo FLOAT   NOT NULL,
+    Data DATE   NOT NULL,
+    Ora TIME    NOT NULL,
     Causale VARCHAR(128),
     Tipo smu.TipoTransazione,
     Mittente VARCHAR(32),
