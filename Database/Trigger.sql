@@ -158,3 +158,5 @@ $$LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER EsecuzioneSpesaProgrammata
     AFTER INSERT ON smu.SpeseProgrammate
     FOR EACH ROW EXECUTE FUNCTION smu.triggerSpesaProgrammata();
+
+
