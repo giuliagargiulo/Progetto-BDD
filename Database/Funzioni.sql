@@ -36,7 +36,7 @@ $$
                                                   WHEN intervalloS = '1 anno' THEN INTERVAL '1 year'
                                                   ELSE INTERVAL '1 day' -- In caso di intervallo non valido, aggiungo un giorno
             END)
-            WHERE DataScadenza = CURRENT_DATE AND IdSpesa = IdSpesaS;
+            WHERE IdSpesa = IdSpesaS;
 
         END LOOP;
         CLOSE cursore;
