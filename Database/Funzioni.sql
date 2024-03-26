@@ -6,25 +6,28 @@ $$
     descrizioneS smu.speseprogrammate.descrizione%TYPE;
     numerocartaS smu.speseprogrammate.numerocarta%TYPE;
     intervalloS smu.TipoPeriodico;
+    IdSpesaS smu.speseprogrammate.idspesa%TYPE;
     importoS FLOAT := 0;
     cursore REFCURSOR;
 
     BEGIN
 
-        OPEN cursore FOR (SELECT S.Importo, S.Descrizione, s.Destinatario, S.NumeroCarta, S.Periodicita
+        OPEN cursore FOR (SELECT S.Importo, S.Descrizione, s.Destinatario, S.NumeroCarta, S.Periodicita, S.IdSpesa
                           FROM smu.SpeseProgrammate AS S
                           WHERE S.DataScadenza = CURRENT_DATE);
 
-        FETCH cursore INTO importoS, descrizioneS, destinatarioS, numerocartaS, intervalloS;
         LOOP
+            FETCH cursore INTO importoS, descrizioneS, destinatarioS, numerocartaS, intervalloS, IdSpesaS;
+            EXIT WHEN NOT FOUND;
             -- Inserimento della transazione
             INSERT INTO smu.Transazione(importo, data, ora, causale, tipo, mittente, destinatario, numerocarta,
                                         nomecategoria)
             VALUES (importoS, CURRENT_DATE, CURRENT_TIME, descrizioneS, 'Uscita', NULL, destinatarioS, numerocartaS, NULL);
 
             --Aggiornamento della data di scadenza del prossimo pagamento programmato
+
             UPDATE smu.SpeseProgrammate
-            SET DataScadenza = DataScadenza + CASE
+            SET DataScadenza = DataScadenza + (CASE
                                                   WHEN intervalloS = '7 giorni' THEN INTERVAL '7 days'
                                                   WHEN intervalloS = '15 giorni' THEN INTERVAL '15 days'
                                                   WHEN intervalloS = '1 mese' THEN INTERVAL '1 month'
@@ -32,8 +35,9 @@ $$
                                                   WHEN intervalloS = '6 mesi' THEN INTERVAL '6 months'
                                                   WHEN intervalloS = '1 anno' THEN INTERVAL '1 year'
                                                   ELSE INTERVAL '1 day' -- In caso di intervallo non valido, aggiungo un giorno
-                END;
-            EXIT WHEN NOT FOUND;
+            END)
+            WHERE DataScadenza = CURRENT_DATE AND IdSpesa = IdSpesaS;
+
         END LOOP;
         CLOSE cursore;
     END;
@@ -41,3 +45,8 @@ $$ LANGUAGE plpgsql;
 
 
 CALL smu.SpesaProgrammata();
+
+
+SELECT S.Importo, S.Descrizione, s.Destinatario, S.NumeroCarta, S.Periodicita
+                          FROM smu.SpeseProgrammate AS S
+                          WHERE S.DataScadenza = CURRENT_DATE;
