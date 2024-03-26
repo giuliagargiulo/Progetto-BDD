@@ -61,7 +61,7 @@ CREATE TABLE smu.Carta(
     CONSTRAINT FK_Conto FOREIGN KEY (NumeroConto) REFERENCES smu.ContoCorrente(NumeroConto)
 );
 
-CREATE TYPE smu.TipoPeriodico AS ENUM('7 giorni', '15 giorni', '1 mese', '3 mesi', '6 mesi', '12 mesi');
+CREATE TYPE smu.TipoPeriodico AS ENUM('7 giorni', '15 giorni', '1 mese', '3 mesi', '6 mesi', '1 anno');
 
 CREATE TABLE smu.SpeseProgrammate(
     IdSpesa SERIAL,
@@ -99,10 +99,13 @@ CREATE TABLE smu.Categoria(
     ParolaChiave VARCHAR(32)
 );
 
+
 CREATE TYPE smu.TipoTransazione AS ENUM('Entrata', 'Uscita');
+CREATE DOMAIN smu.Tipocro AS VARCHAR(16) CHECK(VALUE ~ '[0-9]{11,16}');
 
 CREATE TABLE smu.Transazione(
-    CRO VARCHAR(11),
+    IdTransazione SERIAL,
+    CRO smu.TipoCro,
     Importo FLOAT   NOT NULL,
     Data DATE   NOT NULL,
     Ora TIME    NOT NULL,
@@ -113,7 +116,7 @@ CREATE TABLE smu.Transazione(
     NumeroCarta VARCHAR(16),
     NomeCategoria VARCHAR(32),
 
-    CONSTRAINT PK_TransazioneEntrata PRIMARY KEY (CRO),
+    CONSTRAINT PK_TransazioneEntrata PRIMARY KEY (IdTransazione),
     CONSTRAINT FK_CartaCredito FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE
 
 );

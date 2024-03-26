@@ -7,14 +7,14 @@ BEGIN
     IF NEW.Tipo = 'Uscita' THEN
         UPDATE smu.Transazione
         SET Importo = -(NEW.Importo)
-        WHERE CRO = NEW.CRO;
+        WHERE IdTransazione = NEW.IdTransazione;
     END IF;
 
     --aggiorna il saldo della carta.
     UPDATE smu.Carta
     SET Saldo = Saldo + (SELECT T.Importo
                          FROM smu.Transazione AS T
-                         WHERE T.CRO = NEW.CRO)
+                         WHERE T.IdTransazione = NEW.IdTransazione)
     WHERE NumeroCarta = NEW.NumeroCarta;
 
 
@@ -22,7 +22,7 @@ BEGIN
     UPDATE smu.ContoCorrente
     SET Saldo = Saldo + (SELECT T.Importo
                          FROM smu.Transazione AS T
-                         WHERE T.CRO = NEW.CRO)
+                         WHERE T.IdTransazione = NEW.IdTransazione)
     WHERE NumeroConto = (SELECT Ca.NumeroConto
                          FROM smu.Carta AS Ca
                          WHERE Ca.NumeroCarta = NEW.NumeroCarta);
@@ -59,13 +59,13 @@ BEGIN
                 SET NomeCategoria = (SELECT C.Nome
                                      FROM smu.Categoria AS C
                                      WHERE C.ParolaChiave = parola)
-                WHERE CRO = NEW.CRO;
+                WHERE IdTransazione = NEW.IdTransazione;
             END IF;
 
             IF trovato = 0 THEN
                 UPDATE smu.Transazione
                 SET NomeCategoria = 'Altro'
-                WHERE CRO = NEW.CRO;
+                WHERE IdTransazione = NEW.IdTransazione;
             END IF;
             EXIT WHEN trovato = 1;
         END LOOP;
@@ -158,31 +158,25 @@ CREATE OR REPLACE TRIGGER GeneraCro
     ON smu.Transazione
     FOR EACH ROW EXECUTE FUNCTION smu.triggerGeneraCro();
 
-----------------------------------------------------------------------------------------------------------------------
---6. Trigger che gestisce le spese programmate
---la data di scadenza si intende il momento in cui deve essere effettuato il pagamento e per la prima volta dopo l'inserimento questo dato non deve essere uguale a NULL
 
-CREATE OR REPLACE PROCEDURE smu.SpesaProgrammata() AS
-$$
-    DECLARE
-    destinatarioS smu.speseprogrammate.destinatario%TYPE;
-    descrizioneS smu.speseprogrammate.descrizione%TYPE;
-    numerocartaS smu.speseprogrammate.numerocarta%TYPE;
-    importoS FLOAT := 0;
+----------------------------------------------------------------------------------------------------------------------
+-- 6 Trigger che controlla che le date inserite non siano successive alla data corrente
+
+CREATE OR REPLACE FUNCTION smu.DataTransazione() RETURNS TRIGGER AS
+    $$
     BEGIN
-        SELECT S.Importo, S.Descrizione, s.Destinatario, S.NumeroCarta
-        INTO importoS, descrizioneS, destinatarioS, numerocartaS
-        FROM smu.SpeseProgrammate AS S
-        WHERE S.DataScadenza = CURRENT_DATE;
-
-        INSERT INTO smu.Transazione(importo, data, ora, causale, tipo, mittente, destinatario, numerocarta, nomecategoria) VALUES(importoS, CURRENT_DATE, CURRENT_TIME, descrizioneS, 'Uscita', NULL, destinatarioS, NumeroCartaS, NULL);
+        IF NEW.Data > CURRENT_DATE THEN
+         RAISE EXCEPTION 'ERRORE: La data inserita non è corretta';
+        END IF;
+      RETURN NEW;
     END;
-$$LANGUAGE plpgsql;
+    $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER EsecuzioneSpesaProgrammata
-    AFTER INSERT ON smu.SpeseProgrammate
-    FOR EACH ROW EXECUTE FUNCTION smu.SpesaProgrammata();
+
+CREATE OR REPLACE TRIGGER ControlloData
+    BEFORE INSERT ON smu.Transazione
+    FOR EACH ROW EXECUTE FUNCTION smu.DataTransazione();
+
 
 ----------------------------------------------------------------------------------------------------------------------
-
 
