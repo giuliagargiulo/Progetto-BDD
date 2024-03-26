@@ -51,23 +51,23 @@ BEGIN
 
     FOR parola IN (SELECT C.ParolaChiave FROM smu.Categoria AS C)
         LOOP
-                IF LOWER(NEW.Mittente) LIKE '%' || LOWER(parola) || '%' OR LOWER(NEW.Destinatario) LIKE '%' || LOWER(parola) || '%'
-                    OR LOWER(NEW.Causale) LIKE '%' || LOWER(parola) || '%' THEN
-                    trovato = 1;
-                    UPDATE smu.Transazione
-                    SET NomeCategoria = (SELECT C.Nome
-                                         FROM smu.Categoria AS C
-                                         WHERE C.ParolaChiave = parola)
-                    WHERE CRO = NEW.CRO;
-                END IF;
+            IF LOWER(NEW.Mittente) LIKE '%' || LOWER(parola) || '%' OR
+               LOWER(NEW.Destinatario) LIKE '%' || LOWER(parola) || '%'
+                OR LOWER(NEW.Causale) LIKE '%' || LOWER(parola) || '%' THEN
+                trovato = 1;
+                UPDATE smu.Transazione
+                SET NomeCategoria = (SELECT C.Nome
+                                     FROM smu.Categoria AS C
+                                     WHERE C.ParolaChiave = parola)
+                WHERE CRO = NEW.CRO;
+            END IF;
 
             IF trovato = 0 THEN
                 UPDATE smu.Transazione
                 SET NomeCategoria = 'Altro'
                 WHERE CRO = NEW.CRO;
             END IF;
-
-        EXIT WHEN trovato = 1;
+            EXIT WHEN trovato = 1;
         END LOOP;
     RETURN NEW;
 END;
@@ -103,8 +103,8 @@ CREATE OR REPLACE TRIGGER ControlloTipoTransazione
     FOR EACH ROW EXECUTE FUNCTION smu.triggerTipoTransazione();
 
 -- INSERT PER TESTARE IL TRIGGER 3
-INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 12345678910, 20.00, '2024-03-19', '09:45:00', 'Acquisto online', 'Entrata', NULL, 'E-commerce', '1234567890123456', NULL);
-INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 46173636910, 50.00, '2024-01-29', '13:35:00', 'Acquisto online', 'Uscita', 'Amazon', NULL, '1234567890123456', NULL);
+--INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 12345678910, 20.00, '2024-03-19', '09:45:00', 'Acquisto online', 'Entrata', NULL, 'E-commerce', '1234567890123456', NULL);
+--INSERT INTO smu.Transazione(CRO, Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta, NomeCategoria)VALUES( 46173636910, 50.00, '2024-01-29', '13:35:00', 'Acquisto online', 'Uscita', 'Amazon', NULL, '1234567890123456', NULL);
 
 
 
@@ -134,27 +134,24 @@ CREATE OR REPLACE TRIGGER ControlloTipoCarta
 
 -- INSERT PER TESTARE IL TRIGGER 4
 
-INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5355284922617884', 'Poste Pay Evolution', 100, '2025-12-31', 13.00, 'Credito', NULL, 1);
-INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5334628274884783', 'Carta prepagata', 345, '2024-08-31', 500.00, 'Debito', 1000.00, 1);
+--INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5355284922617884', 'Poste Pay Evolution', 100, '2025-12-31', 13.00, 'Credito', NULL, 1);
+--INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafond, NumeroConto) VALUES('5334628274884783', 'Carta prepagata', 345, '2024-08-31', 500.00, 'Debito', 1000.00, 1);
 
 
 ----------------------------------------------------------------------------------------------------------------------
 --5. Trigger che gestisce le spese programmate
 --la data di scadenza si intende il momento in cui deve essere effettuato il pagamento e per la prima volta dopo l'inserimento questo dato non deve essere uguale a NULL
 
-CREATE OR REPLACE FUNCTION smu.triggerSpesaProgrammata() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION smu.SpesaProgrammata() RETURNS AS
 $$
-    DECLARE
-        DataAttuale TIMESTAMP := CURRENT_TIMESTAMP;
     BEGIN
-        IF NEW.Periodicita = '7 giorni' THEN
-            UPDATE smu.SpeseProgrammate
-            SET DataScadenza =
-        END IF;
-
+        INSERT INTO smu.Transazione VALUES(14728139341, Importo, CURRENT_DATE, CURRENT_TIME, Descrizione, 'Uscita', NULL, Destinatario, NumeroCarta, NULL)
+        SELECT S.Importo, S.Descrizione, s.Destinatario, S.NumeroCarta
+        FROM smu.SpeseProgrammate AS S
+        WHERE S.DataScadenza = CURRENT_DATE;
     END;
 $$LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER EsecuzioneSpesaProgrammata
     AFTER INSERT ON smu.SpeseProgrammate
-    FOR EACH ROW EXECUTE FUNCTION smu.triggerSpesaProgrammata();
+    FOR EACH ROW EXECUTE FUNCTION smu.SpesaProgrammata();
