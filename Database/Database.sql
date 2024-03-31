@@ -86,7 +86,7 @@ CREATE TABLE smu.Portafoglio(
     CONSTRAINT PK_Portafoglio PRIMARY KEY (IdPortafoglio)
 );
 
-CREATE TABLE smu.Associazione(
+CREATE TABLE smu.AssociazioneCartaPortafoglio(
     IdPortafoglio INTEGER,
     NumeroCarta VARCHAR(16),
 
@@ -114,9 +114,25 @@ CREATE TABLE smu.Transazione(
     Mittente VARCHAR(32),
     Destinatario VARCHAR(32),
     NumeroCarta VARCHAR(16),
-    NomeCategoria VARCHAR(32),
 
     CONSTRAINT PK_TransazioneEntrata PRIMARY KEY (IdTransazione),
     CONSTRAINT FK_CartaCredito FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE
 
 );
+
+CREATE TABLE smu.TransazioniInPortafogli(
+    IdTransazione INTEGER,
+    IdPortafoglio INTEGER,
+
+    CONSTRAINT FK_Transazione FOREIGN KEY(IdTransazione) REFERENCES smu.Transazione(IdTransazione) ON DELETE CASCADE,
+    CONSTRAINT FK_Portafoglio FOREIGN KEY(IdPortafoglio) REFERENCES smu.Portafoglio(IdPortafoglio) ON DELETE CASCADE
+);
+
+CREATE TABLE smu.CategorieInPortafogli(
+    NomeCategoria VARCHAR(32),
+    IdPortafoglio INTEGER,
+
+    CONSTRAINT FK_Categoria FOREIGN KEY(NomeCategoria) REFERENCES smu.Categoria(Nome) ON DELETE CASCADE,
+    CONSTRAINT FK_Portafoglio FOREIGN KEY(IdPortafoglio) REFERENCES smu.Portafoglio(IdPortafoglio) ON DELETE CASCADE
+);
+    
