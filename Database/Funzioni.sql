@@ -43,7 +43,6 @@ $$
                                                   WHEN intervalloS = '3 mesi' THEN INTERVAL '3 months'
                                                   WHEN intervalloS = '6 mesi' THEN INTERVAL '6 months'
                                                   WHEN intervalloS = '1 anno' THEN INTERVAL '1 year'
-                                                  ELSE INTERVAL '1 day' -- In caso di intervallo non valido, aggiungo un giorno
             END)
             WHERE IdSpesa = IdSpesaS;
 

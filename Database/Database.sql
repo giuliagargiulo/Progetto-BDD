@@ -135,4 +135,3 @@ CREATE TABLE smu.CategorieInPortafogli(
     CONSTRAINT FK_Categoria FOREIGN KEY(NomeCategoria) REFERENCES smu.Categoria(Nome) ON DELETE CASCADE,
     CONSTRAINT FK_Portafoglio FOREIGN KEY(IdPortafoglio) REFERENCES smu.Portafoglio(IdPortafoglio) ON DELETE CASCADE
 );
-    

@@ -41,7 +41,9 @@ EXECUTE FUNCTION smu.triggerTransazione();
 
 ---------------------------------------------------------------------------------------------------------------
 -- 2. Trigger che aggiunge la categoria ad una transazione in base alla presenza di determinate parole chiave.
--- Da RIVEDERE
+-- Da RIVEDERE: dobbiamio fare un trigger che inserisce le transazioni nei portafogli in base alle categorie
+-- collegate ai portafogli e in base alle parole chiave contenute nelle transazioni.
+
 
 CREATE OR REPLACE FUNCTION smu.triggerCategoria() RETURNS TRIGGER AS
 $$
