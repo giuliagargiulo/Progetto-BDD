@@ -1,137 +1,150 @@
 DROP SCHEMA IF EXISTS smu CASCADE;
 CREATE SCHEMA smu;
 
+--tabella Famiglia
 CREATE TABLE smu.Famiglia(
-    IdGruppo SERIAL,
-    NomeGruppo VARCHAR(32),
+    IdGruppo    SERIAL,
+    NomeGruppo  VARCHAR(32)  NOT NULL,
 
-    CONSTRAINT PK_famiglia PRIMARY KEY (IdGruppo),
-    CONSTRAINT CK_famiglia CHECK (NomeGruppo IS NOT NULL)
+    CONSTRAINT PK_famiglia PRIMARY KEY (IdGruppo)
 );
 
-CREATE DOMAIN smu.TipoTelefono AS VARCHAR(13) CHECK (VALUE ~ '\+[0-9]{2}[0-9]{10}');
-CREATE DOMAIN smu.TipoEmail AS VARCHAR(128) CHECK (VALUE ~ '[a-zA-Z0-9._%+\-]@[a-zA-Z0-9.-]\d*.*[A-Za-z]{2,4}');
-CREATE DOMAIN smu.TipoPassword AS VARCHAR(32) CHECK (VALUE ~ '[a-zA-Z0-9! " # $ % & ( ) * + , - . / : ; < = > ? @ \[ \] \ ^ _` \{ | \} ~ ]{8,32}');
 
-
+--Tabella Utente
 CREATE TABLE smu.Utente(
     Username VARCHAR(32),
-    Nome VARCHAR(32),
-    Cognome VARCHAR(32),
-    Telefono smu.TipoTelefono,
-    Email smu.TipoEmail,
-    Password smu.TipoPassword,
+    Nome     VARCHAR(32),
+    Cognome  VARCHAR(32),
+    Telefono VARCHAR(13),
+    Email    VARCHAR(128),
+    Password VARCHAR(32),
     IdGruppo INTEGER,
 
     CONSTRAINT PK_Utente PRIMARY KEY (Username),
     CONSTRAINT FK_Famiglia FOREIGN KEY(IdGruppo) REFERENCES smu.Famiglia(IdGruppo) ON DELETE CASCADE,
-    CONSTRAINT UK_Utente UNIQUE (Email, Password)
+    CONSTRAINT UK_Utente UNIQUE (Email, Password),
+    CONSTRAINT CK_Telefono CHECK (Telefono ~ '\+[0-9]{2}[0-9]{10}'),
+    CONSTRAINT CK_Email CHECK (Email ~ '[a-zA-Z0-9._%+\-]@[a-zA-Z0-9.-]\d*.*[A-Za-z]{2,4}'),
+    CONSTRAINT CK_Password CHECK (Password ~ '[a-zA-Z0-9! " # $ % & ( ) * + , - . / : ; < = > ? @ \[ \] \ ^ _` \{ | \} ~ ]{8,32}')
 );
 
-CREATE DOMAIN smu.TipoIBAN AS VARCHAR(27) CHECK (VALUE ~ '[A-Z]{2}[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[0-9A-Z]{5}');
-CREATE DOMAIN smu.TipoBIC AS VARCHAR(11) CHECK (VALUE ~ '[A-Z]{4}[A-Z]{2}[0-9A-Z]{2}[0-9A-Z]{0,3}');
 
+--Tabella Conto Corrente
 CREATE TABLE smu.ContoCorrente(
     NumeroConto VARCHAR(12),
-    IBAN smu.TipoIBAN,
-    Saldo FLOAT,
-    NomeBanca VARCHAR(128),
-    BIC VARCHAR(11),
-    Username VARCHAR(32),
+    IBAN        VARCHAR(27),
+    Saldo       FLOAT,
+    NomeBanca   VARCHAR(128),
+    BIC         VARCHAR(11),
+    Username    VARCHAR(32),
 
     CONSTRAINT PK_Conto PRIMARY KEY (NumeroConto),
-    CONSTRAINT FK_Utente FOREIGN KEY(Username) REFERENCES smu.Utente(Username) ON DELETE CASCADE
+    CONSTRAINT FK_Utente FOREIGN KEY(Username) REFERENCES smu.Utente(Username) ON DELETE CASCADE,
+    CONSTRAINT CK_IBAN CHECK (IBAN ~ '[A-Z]{2}[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[0-9A-Z]{5}'),
+    CONSTRAINT CK_BIC CHECK (BIC ~ '[A-Z]{4}[A-Z]{2}[0-9A-Z]{2}[0-9A-Z]{0,3}')
+
 );
 
-CREATE DOMAIN smu.TipoNumeroCarta AS VARCHAR(16) CHECK(VALUE ~ '[0-9]{16}');
-CREATE DOMAIN smu.TipoCVV AS VARCHAR(3) CHECK(VALUE ~ '[0-9]{3}');
-CREATE TYPE smu.TipoCarta AS ENUM('Credito', 'Debito');
 
+--Tabella Carta
 CREATE TABLE smu.Carta(
-    NumeroCarta smu.TipoNumeroCarta,
-    Nome VARCHAR(32),
-    CVV smu.TipoCVV  NOT NULL,
-    Scadenza DATE  NOT NULL,
-    Saldo FLOAT,
-    Plafond FLOAT,
-    TipoCarta smu.TipoCarta,
+    NumeroCarta VARCHAR(16),
+    Nome        VARCHAR(32),
+    CVV         VARCHAR(3) NOT NULL,
+    Scadenza    DATE       NOT NULL,
+    Saldo       FLOAT,
+    TipoCarta   VARCHAR(7),
+    Plafond     FLOAT,
     NumeroConto VARCHAR(16),
 
     CONSTRAINT PK_Carta PRIMARY KEY (NumeroCarta),
-    CONSTRAINT FK_Conto FOREIGN KEY (NumeroConto) REFERENCES smu.ContoCorrente(NumeroConto)
+    CONSTRAINT FK_Conto FOREIGN KEY (NumeroConto) REFERENCES smu.ContoCorrente (NumeroConto),
+    CONSTRAINT CK_NumeroCarta CHECK (NumeroCarta ~ '[0-9]{16}'),
+    CONSTRAINT CK_CVV CHECK (CVV ~ '[0-9]{3}'),
+    CONSTRAINT CK_TipoCarta CHECK (TipoCarta IN ('Credito', 'Debito'))
 );
 
-CREATE TYPE smu.TipoPeriodico AS ENUM('7 giorni', '15 giorni', '1 mese', '3 mesi', '6 mesi', '1 anno');
 
+--Tabella Spese Programmate
 CREATE TABLE smu.SpeseProgrammate(
-    IdSpesa SERIAL,
-    Descrizione VARCHAR(64),
-    Periodicita smu.TipoPeriodico,
-    DataScadenza DATE  NOT NULL,
+    IdSpesa         SERIAL,
+    Descrizione     VARCHAR(64),
+    Periodicita     VARCHAR(9),
+    DataScadenza    DATE NOT NULL,
     DataFineRinnovo DATE,
-    Importo FLOAT,
-    Destinatario VARCHAR(32),
-    NumeroCarta smu.TipoNumeroCarta,
+    Importo         FLOAT,
+    Destinatario    VARCHAR(32),
+    NumeroCarta     VARCHAR(16), --controllare se giusto siccome è stato tolto il tipo,
 
     CONSTRAINT PK_Spesa PRIMARY KEY (IdSpesa),
-    CONSTRAINT FK_Carta FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE
+    CONSTRAINT FK_Carta FOREIGN KEY (NumeroCarta) REFERENCES smu.Carta (NumeroCarta) ON DELETE CASCADE,
+    CONSTRAINT CK_SpeseProgrammate_Periodicita CHECK (Periodicita IN
+                                                      ('7 giorni', '15 giorni', '1 mese', '3 mesi', '6 mesi', '1 anno'))
 );
 
 
+--Tabella Transazione
+CREATE TABLE smu.Transazione(
+    IdTransazione SERIAL,
+    CRO           VARCHAR(16),
+    Importo       FLOAT NOT NULL,
+    Data          DATE  NOT NULL,
+    Ora           TIME  NOT NULL,
+    Causale       VARCHAR(128),
+    Tipo          VARCHAR(7),
+    Mittente      VARCHAR(32),
+    Destinatario  VARCHAR(32),
+    NumeroCarta   VARCHAR(16),
+
+    CONSTRAINT PK_TransazioneEntrata PRIMARY KEY (IdTransazione),
+    CONSTRAINT FK_CartaCredito FOREIGN KEY (NumeroCarta) REFERENCES smu.Carta (NumeroCarta) ON DELETE CASCADE,
+    CONSTRAINT CK_Transazione_CRO CHECK (CRO ~ '[0-9]{11,16}'),
+    CONSTRAINT CK_Transazione_Tipo CHECK (Tipo IN ('Entrata', 'Uscita'))
+);
+
+
+--Tabella Portafoglio
 CREATE TABLE smu.Portafoglio(
-    IdPortafoglio SERIAL,
+    IdPortafoglio   SERIAL,
     NomePortafoglio VARCHAR(32),
-    Saldo FLOAT,
+    Saldo           FLOAT,
 
     CONSTRAINT PK_Portafoglio PRIMARY KEY (IdPortafoglio)
 );
 
-CREATE TABLE smu.AssociazioneCartaPortafoglio(
-    IdPortafoglio INTEGER,
-    NumeroCarta VARCHAR(16),
 
-    CONSTRAINT FK_Carta FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE,
-    CONSTRAINT FK_Portafoglio FOREIGN KEY(IdPortafoglio) REFERENCES smu.Portafoglio(IdPortafoglio) ON DELETE CASCADE
-);
-
+--Tabella Categoria
 CREATE TABLE smu.Categoria(
-    Nome VARCHAR(32),
+    Nome         VARCHAR(32) PRIMARY KEY,
     ParolaChiave VARCHAR(32)
 );
 
 
-CREATE TYPE smu.TipoTransazione AS ENUM('Entrata', 'Uscita');
-CREATE DOMAIN smu.Tipocro AS VARCHAR(16) CHECK(VALUE ~ '[0-9]{11,16}');
+--tabella ponte tra Portafoglio e Carta  *a*
+CREATE TABLE smu.AssociazioneCartaPortafoglio(
+    IdPortafoglio INTEGER,
+    NumeroCarta   VARCHAR(16),
 
-CREATE TABLE smu.Transazione(
-    IdTransazione SERIAL,
-    CRO smu.TipoCro,
-    Importo FLOAT   NOT NULL,
-    Data DATE   NOT NULL,
-    Ora TIME    NOT NULL,
-    Causale VARCHAR(128),
-    Tipo smu.TipoTransazione,
-    Mittente VARCHAR(32),
-    Destinatario VARCHAR(32),
-    NumeroCarta VARCHAR(16),
-
-    CONSTRAINT PK_TransazioneEntrata PRIMARY KEY (IdTransazione),
-    CONSTRAINT FK_CartaCredito FOREIGN KEY(NumeroCarta) REFERENCES smu.Carta(NumeroCarta) ON DELETE CASCADE
-
+    CONSTRAINT FK_Carta FOREIGN KEY (NumeroCarta) REFERENCES smu.Carta (NumeroCarta) ON DELETE CASCADE,
+    CONSTRAINT FK_Portafoglio FOREIGN KEY (IdPortafoglio) REFERENCES smu.Portafoglio (IdPortafoglio) ON DELETE CASCADE
 );
 
+
+--tabella ponte tra Portafoglio e Transazione  *a*
 CREATE TABLE smu.TransazioniInPortafogli(
     IdTransazione INTEGER,
     IdPortafoglio INTEGER,
 
-    CONSTRAINT FK_Transazione FOREIGN KEY(IdTransazione) REFERENCES smu.Transazione(IdTransazione) ON DELETE CASCADE,
-    CONSTRAINT FK_Portafoglio FOREIGN KEY(IdPortafoglio) REFERENCES smu.Portafoglio(IdPortafoglio) ON DELETE CASCADE
+    CONSTRAINT FK_Transazione FOREIGN KEY (IdTransazione) REFERENCES smu.Transazione (IdTransazione) ON DELETE CASCADE,
+    CONSTRAINT FK_Portafoglio FOREIGN KEY (IdPortafoglio) REFERENCES smu.Portafoglio (IdPortafoglio) ON DELETE CASCADE
 );
 
+
+--tabella ponte tra Portafoglio e Categoria  *a*
 CREATE TABLE smu.CategorieInPortafogli(
     NomeCategoria VARCHAR(32),
     IdPortafoglio INTEGER,
 
-    CONSTRAINT FK_Categoria FOREIGN KEY(NomeCategoria) REFERENCES smu.Categoria(Nome) ON DELETE CASCADE,
-    CONSTRAINT FK_Portafoglio FOREIGN KEY(IdPortafoglio) REFERENCES smu.Portafoglio(IdPortafoglio) ON DELETE CASCADE
+    CONSTRAINT FK_Categoria FOREIGN KEY (NomeCategoria) REFERENCES smu.Categoria (Nome) ON DELETE CASCADE,
+    CONSTRAINT FK_Portafoglio FOREIGN KEY (IdPortafoglio) REFERENCES smu.Portafoglio (IdPortafoglio) ON DELETE CASCADE
 );

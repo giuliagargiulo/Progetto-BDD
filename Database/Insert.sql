@@ -8,7 +8,6 @@ INSERT INTO smu.Famiglia(NomeGruppo) VALUES('Famiglia Gaetano');
 INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES('Giulia28', 'Giulia', 'Gargiulo', '+393662648291', 'giulia.gargiulo3@studenti.unina.it', 'Password1', 1);
 INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES('MirGae', 'Miriam', 'Gaetano', '+393316581941', 'miriam.gaetano@studenti.unina.it', 'Password2', 2);
 
-
 -- Conti Correnti da fare
 INSERT INTO smu.ContoCorrente(NumeroConto,Saldo) VALUES(1, 10000);
 
