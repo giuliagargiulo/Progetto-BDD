@@ -28,6 +28,7 @@ INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafon
 
 
 -- Portafogli
+<<<<<<< HEAD
 INSERT INTO smu.Portafoglio(NomePortafoglio, Saldo) VALUES('Viaggi', 2500.00);
 INSERT INTO smu.Portafoglio(NomePortafoglio, Saldo) VALUES('Spese Mensili', 3200.00);
 
@@ -61,10 +62,6 @@ INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES('Affitto',3);
 INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES( 'Bollette', 3);
 INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES( 'Carburante', 4);
 INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES( 'Acquisto online', 5);
-
-
-
-
 
 -- Transazioni
 INSERT INTO smu.Transazione(Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta) VALUES(50.00, '2023-03-21', '13:21:30', 'Rimborso', 'Entrata', 'Rimborso Amazon', NULL, '5355284927482884');

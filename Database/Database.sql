@@ -112,6 +112,7 @@ CREATE TABLE smu.Portafoglio(
     CONSTRAINT PK_Portafoglio PRIMARY KEY (IdPortafoglio)
 );
 
+<<<<<<< HEAD
 CREATE TABLE smu.Categoria(
     IdCategoria SERIAL,
     Nome VARCHAR(32),
@@ -153,4 +154,8 @@ CREATE TABLE smu.CategorieInPortafogli(
 
     CONSTRAINT FK_Categoria FOREIGN KEY (NomeCategoria) REFERENCES smu.Categoria (Nome) ON DELETE CASCADE,
     CONSTRAINT FK_Portafoglio FOREIGN KEY (IdPortafoglio) REFERENCES smu.Portafoglio (IdPortafoglio) ON DELETE CASCADE
+<<<<<<< HEAD
 );
+=======
+);
+>>>>>>> ea910000a5c563476d13afe8c5297758090edb84

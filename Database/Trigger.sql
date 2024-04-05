@@ -159,22 +159,3 @@ CREATE OR REPLACE TRIGGER GeneraCro
 
 
 ----------------------------------------------------------------------------------------------------------------------
--- 6 Trigger che controlla che le date inserite non siano successive alla data corrente
-
-CREATE OR REPLACE FUNCTION smu.DataTransazione() RETURNS TRIGGER AS
-    $$
-    BEGIN
-        IF NEW.Data > CURRENT_DATE THEN
-         RAISE EXCEPTION 'ERRORE: La data inserita non è corretta';
-        END IF;
-      RETURN NEW;
-    END;
-    $$ LANGUAGE plpgsql;
-
-
-CREATE OR REPLACE TRIGGER ControlloData
-    BEFORE INSERT ON smu.Transazione
-    FOR EACH ROW EXECUTE FUNCTION smu.DataTransazione();
-
-
-----------------------------------------------------------------------------------------------------------------------
