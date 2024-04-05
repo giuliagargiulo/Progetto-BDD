@@ -95,9 +95,19 @@ CREATE TABLE smu.AssociazioneCartaPortafoglio(
 );
 
 CREATE TABLE smu.Categoria(
+    IdCategoria SERIAL,
     Nome VARCHAR(32),
-    ParolaChiave VARCHAR(32)
+
+    CONSTRAINT PK_Categoria PRIMARY KEY (IdCategoria)
 );
+
+CREATE TABLE smu.ParoleChiave(
+    ParolaChiave VARCHAR(32),
+    IdCategoria INTEGER,
+
+    CONSTRAINT FK_Categoria FOREIGN KEY(IdCategoria) REFERENCES smu.Categoria(IdCategoria) ON DELETE CASCADE
+);
+
 
 
 CREATE TYPE smu.TipoTransazione AS ENUM('Entrata', 'Uscita');
@@ -129,9 +139,10 @@ CREATE TABLE smu.TransazioniInPortafogli(
 );
 
 CREATE TABLE smu.CategorieInPortafogli(
-    NomeCategoria VARCHAR(32),
+    IdCategoria INTEGER,
     IdPortafoglio INTEGER,
 
-    CONSTRAINT FK_Categoria FOREIGN KEY(NomeCategoria) REFERENCES smu.Categoria(Nome) ON DELETE CASCADE,
+    CONSTRAINT FK_Categoria FOREIGN KEY(IdCategoria) REFERENCES smu.Categoria(IdCategoria) ON DELETE CASCADE,
     CONSTRAINT FK_Portafoglio FOREIGN KEY(IdPortafoglio) REFERENCES smu.Portafoglio(IdPortafoglio) ON DELETE CASCADE
 );
+

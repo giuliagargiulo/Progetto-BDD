@@ -32,7 +32,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE TRIGGER ModificaImportoTransazione
+CREATE OR REPLACE TRIGGER ModificaImporto
     AFTER INSERT
     ON smu.Transazione
     FOR EACH ROW
@@ -40,35 +40,31 @@ EXECUTE FUNCTION smu.triggerTransazione();
 
 
 ---------------------------------------------------------------------------------------------------------------
--- 2. Trigger che aggiunge la categoria ad una transazione in base alla presenza di determinate parole chiave.
--- Da RIVEDERE: dobbiamio fare un trigger che inserisce le transazioni nei portafogli in base alle categorie
--- collegate ai portafogli e in base alle parole chiave contenute nelle transazioni.
+-- 2. Trigger che aggiunge una transazione ad un portafoglio in base alle parole chiave, dopo l'inserimento di una nuova transazione.
 
 
-CREATE OR REPLACE FUNCTION smu.triggerCategoria() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION smu.triggerPortafoglio() RETURNS TRIGGER AS
 $$
 DECLARE
-    parola  smu.Categoria.ParolaChiave%TYPE;
+    parola  smu.ParoleChiave.ParolaChiave%TYPE;
     trovato INTEGER := 0;
+    NumPortafoglio smu.Portafoglio.IdPortafoglio%TYPE;
 BEGIN
 
-    FOR parola IN (SELECT C.ParolaChiave FROM smu.Categoria AS C)
+    FOR parola IN (SELECT PC.ParolaChiave FROM smu.ParoleChiave AS PC)
         LOOP
+
             IF LOWER(NEW.Mittente) LIKE '%' || LOWER(parola) || '%' OR
                LOWER(NEW.Destinatario) LIKE '%' || LOWER(parola) || '%'
                 OR LOWER(NEW.Causale) LIKE '%' || LOWER(parola) || '%' THEN
-                trovato = 1;
-                UPDATE smu.Transazione
-                SET NomeCategoria = (SELECT C.Nome
-                                     FROM smu.Categoria AS C
-                                     WHERE C.ParolaChiave = parola)
-                WHERE IdTransazione = NEW.IdTransazione;
-            END IF;
 
-            IF trovato = 0 THEN
-                UPDATE smu.Transazione
-                SET NomeCategoria = 'Altro'
-                WHERE IdTransazione = NEW.IdTransazione;
+                SELECT CP.IdPortafoglio
+                INTO NumPortafoglio
+                FROM smu.CategorieInPortafogli AS CP JOIN smu.ParoleChiave AS PC ON CP.IdCategoria = PC.IdCategoria
+                WHERE PC.ParolaChiave = parola;
+
+                INSERT INTO smu.TransazioniInPortafogli(IdTransazione, IdPortafoglio) VALUES(NEW.IDTransazione,NumPortafoglio);
+                trovato = 1;
             END IF;
             EXIT WHEN trovato = 1;
         END LOOP;
@@ -76,9 +72,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER ModificaCategoriaTransazione
+CREATE OR REPLACE TRIGGER InserisciTransazioneInPortafoglio
     AFTER INSERT ON smu.Transazione
-    FOR EACH ROW EXECUTE FUNCTION smu.triggerCategoria();
+    FOR EACH ROW EXECUTE FUNCTION smu.triggerPortafoglio();
 
 
 --------------------------------------------------------------------------------------------------------------
@@ -182,4 +178,3 @@ CREATE OR REPLACE TRIGGER ControlloData
 
 
 ----------------------------------------------------------------------------------------------------------------------
-
