@@ -2,7 +2,6 @@
 INSERT INTO smu.Famiglia(NomeGruppo) VALUES('Famiglia Gargiulo');
 INSERT INTO smu.Famiglia(NomeGruppo) VALUES('Famiglia Gaetano');
 
-
 -- Utenti
 INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES('Giulia28', 'Giulia', 'Gargiulo', '+393662648291', 'giulia.gargiulo3@studenti.unina.it', 'Password1', 1);
 INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES('MirGae', 'Miriam', 'Gaetano', '+393316581941', 'miriam.gaetano@studenti.unina.it', 'Password2', 2);
@@ -15,8 +14,6 @@ INSERT INTO smu.ContoCorrente (NumeroConto, IBAN, Saldo, NomeBanca, BIC, Usernam
 INSERT INTO smu.ContoCorrente (NumeroConto, IBAN, Saldo, NomeBanca, BIC, Username) VALUES ('000000666666', 'IT60X0542811101000000666666', 5000.00, 'Banca Monte dei Paschi di Siena (MPS)', 'BICMNOPQR78', 'Giulia28');
 INSERT INTO smu.ContoCorrente (NumeroConto, IBAN, Saldo, NomeBanca, BIC, Username)VALUES ('000000777777', 'IT60X0542811101000000777777', 7000.00, 'Banca Mediolanum', 'BICUVWX3456', 'Giulia28');
 INSERT INTO smu.ContoCorrente (NumeroConto, IBAN, Saldo, NomeBanca, BIC, Username)VALUES ('000000888888', 'IT60X0542811101000000888888', 9000.00, 'Poste Italiane', 'BICSTUV7890','MirGae');
-
-
 
 
 --Carte
@@ -36,7 +33,6 @@ INSERT INTO smu.CARTA(NumeroCarta, Nome, CVV, Scadenza, Saldo, TipoCarta, Plafon
 
 
 -- Portafogli
-<<<<<<< HEAD
 INSERT INTO smu.Portafoglio(NomePortafoglio, Saldo) VALUES('Viaggi', 2500.00);
 INSERT INTO smu.Portafoglio(NomePortafoglio, Saldo) VALUES('Spese Mensili', 3200.00);
 

@@ -149,10 +149,10 @@ CREATE TABLE smu.TransazioniInPortafogli(
 
 --tabella ponte tra Portafoglio e Categoria  *a*
 CREATE TABLE smu.CategorieInPortafogli(
-    NomeCategoria VARCHAR(32),
+    IdCategoria INTEGER,
     IdPortafoglio INTEGER,
 
-    CONSTRAINT FK_Categoria FOREIGN KEY (NomeCategoria) REFERENCES smu.Categoria (Nome) ON DELETE CASCADE,
+    CONSTRAINT FK_Categoria FOREIGN KEY (IdCategoria) REFERENCES smu.Categoria (IdCategoria) ON DELETE CASCADE,
     CONSTRAINT FK_Portafoglio FOREIGN KEY (IdPortafoglio) REFERENCES smu.Portafoglio (IdPortafoglio) ON DELETE CASCADE
 );
 
