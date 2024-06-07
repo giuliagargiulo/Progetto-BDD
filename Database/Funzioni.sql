@@ -1,5 +1,7 @@
+-- Procedura che gestisce le spese programmate: trasforma le spese programmate in transazioni in uscita quando la data di scadenza è uguale alla data attuale,
+-- ed aggiorna la data di scadenza in base alla periodicità per il prossimo rinnovo; se la data di fine rinnovo è uguale alla data attuale, allora elimina la spesa programmata.
 
-CREATE OR REPLACE PROCEDURE smu.SpesaProgrammata() AS
+CREATE OR REPLACE PROCEDURE smu.ProceduraSpesaProgrammata() AS
 $$
     DECLARE
     destinatarioS smu.speseprogrammate.destinatario%TYPE;
@@ -49,4 +51,4 @@ $$
     END;
 $$ LANGUAGE plpgsql;
 
-CALL smu.SpesaProgrammata();
+CALL smu.ProceduraSpesaProgrammata();

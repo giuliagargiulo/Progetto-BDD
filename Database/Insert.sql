@@ -101,3 +101,10 @@ INSERT INTO  smu.SpeseProgrammate(Descrizione, Periodicita, DataScadenza, DataFi
 INSERT INTO  smu.SpeseProgrammate(Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES('Rata Mutuo', '1 mese', '2024-04-10', '2024-12-10', 1000.00, 'Banca XYZ', '1234567890123456');
 INSERT INTO  smu.SpeseProgrammate(Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES('Assicurazione Auto Annuale', '1 anno', '2024-03-31', '2025-03-31', 600.00, 'Assicurazioni S.p.A.', '1234567890123456');
 INSERT INTO  smu.SpeseProgrammate(Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES('Pagamento Affitto Garage', '6 mesi', '2024-04-20', '2024-10-20', 150.00, 'Proprietario Garage', '1414141414141414');
+
+--Portafogli associati a categorie
+INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(1, 1);
+INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(2, 2);
+INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(2, 3);
+INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(2, 4);
+INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(1, 5);

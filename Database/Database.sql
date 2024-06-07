@@ -3,10 +3,10 @@ CREATE SCHEMA smu;
 
 --tabella Famiglia
 CREATE TABLE smu.Famiglia(
-    IdGruppo    SERIAL,
-    NomeGruppo  VARCHAR(32)  NOT NULL,
+    IdFamiglia   SERIAL,
+    NomeFamiglia  VARCHAR(32)  NOT NULL,
 
-    CONSTRAINT PK_famiglia PRIMARY KEY (IdGruppo)
+    CONSTRAINT PK_famiglia PRIMARY KEY (IdFamiglia)
 );
 
 
@@ -18,10 +18,10 @@ CREATE TABLE smu.Utente(
     Telefono VARCHAR(13)  NOT NULL,
     Email    VARCHAR(128) NOT NULL,
     Password VARCHAR(32)  NOT NULL,
-    IdGruppo INTEGER,
+    IdFamiglia INTEGER,
 
     CONSTRAINT PK_Utente PRIMARY KEY (Username),
-    CONSTRAINT FK_Famiglia FOREIGN KEY (IdGruppo) REFERENCES smu.Famiglia (IdGruppo) ON DELETE CASCADE,
+    CONSTRAINT FK_Famiglia FOREIGN KEY (IdFamiglia) REFERENCES smu.Famiglia (IdFamiglia) ON DELETE CASCADE,
     CONSTRAINT UK_Utente UNIQUE (Email, Password),
     CONSTRAINT CK_Telefono CHECK (Telefono ~ '\+[0-9]{2}[0-9]{10}'),
     CONSTRAINT CK_Email CHECK (Email ~ '[a-zA-Z0-9._%+\-]@[a-zA-Z0-9.-]\d*.*[A-Za-z]{2,4}'),
@@ -148,7 +148,7 @@ CREATE TABLE smu.TransazioniInPortafogli(
 
 
 --tabella ponte tra Portafoglio e Categoria  *a*
-CREATE TABLE smu.CategorieInPortafogli(
+CREATE TABLE smu.PortafogliInCategorie(
     IdCategoria INTEGER,
     IdPortafoglio INTEGER,
 

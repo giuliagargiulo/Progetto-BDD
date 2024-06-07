@@ -1,4 +1,4 @@
--- 1. Trigger che aggiorna il valore del saldo e del conto a seguito di una determinata transazione.
+-- 1. Trigger che imposta a negativo il valore di una transazione in uscita ed aggiorna il valore del saldo della carta e del conto a seguito di una transazione.
 
 CREATE OR REPLACE FUNCTION smu.triggerTransazione() RETURNS TRIGGER AS
 $$
@@ -58,10 +58,10 @@ BEGIN
                LOWER(NEW.Destinatario) LIKE '%' || LOWER(parola) || '%'
                 OR LOWER(NEW.Causale) LIKE '%' || LOWER(parola) || '%' THEN
 
-                SELECT CP.IdPortafoglio
+                SELECT PC.IdPortafoglio
                 INTO NumPortafoglio
-                FROM smu.CategorieInPortafogli AS CP JOIN smu.ParoleChiave AS PC ON CP.IdCategoria = PC.IdCategoria
-                WHERE PC.ParolaChiave = parola;
+                FROM smu.PortafogliInCategorie AS PC JOIN smu.ParoleChiave AS K ON PC.IdCategoria = PC.IdCategoria
+                WHERE K.ParolaChiave = parola;
 
                 INSERT INTO smu.TransazioniInPortafogli(IdTransazione, IdPortafoglio) VALUES(NEW.IDTransazione,NumPortafoglio);
                 trovato = 1;
