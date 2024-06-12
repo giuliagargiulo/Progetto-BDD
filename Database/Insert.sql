@@ -1,13 +1,12 @@
 -- Famiglie
-INSERT INTO smu.Famiglia(NomeGruppo) VALUES('Famiglia Gargiulo');
-INSERT INTO smu.Famiglia(NomeGruppo) VALUES('Famiglia Gaetano');
+INSERT INTO smu.Famiglia(NomeFamiglia) VALUES('Famiglia Gargiulo');
+INSERT INTO smu.Famiglia(NomeFamiglia) VALUES('Famiglia Gaetano');
 
 -- Utenti
-INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES('Giulia28', 'Giulia', 'Gargiulo', '+393662648291', 'giulia.gargiulo3@studenti.unina.it', 'Password1', 1);
-INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdGruppo) VALUES('MirGae', 'Miriam', 'Gaetano', '+393316581941', 'miriam.gaetano@studenti.unina.it', 'Password2', 2);
+INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdFamiglia) VALUES('Giulia28', 'Giulia', 'Gargiulo', '+393662648291', 'giulia.gargiulo3@studenti.unina.it', 'Password1', 1);
+INSERT INTO smu.Utente(Username, Nome, Cognome, Telefono, Email, Password, IdFamiglia) VALUES('MirGae', 'Miriam', 'Gaetano', '+393316581941', 'miriam.gaetano@studenti.unina.it', 'Password2', 2);
 
 -- Conti Correnti da fare
-
 INSERT INTO smu.ContoCorrente (NumeroConto, IBAN, Saldo, NomeBanca, BIC, Username)VALUES ('000000123456', 'IT60X0542811101000000123456', 1500.00, 'UniCredit', 'BICABCD1234', 'Giulia28');
 INSERT INTO smu.ContoCorrente (NumeroConto, IBAN, Saldo, NomeBanca, BIC, Username)VALUES ('000000987654', 'IT60X0542811101000000987654', 2500.00, 'Intesa Sanpaolo', 'BICWXYZ5678', 'MirGae');
 INSERT INTO smu.ContoCorrente (NumeroConto, IBAN, Saldo, NomeBanca, BIC, Username) VALUES ('000000555555', 'IT60X0542811101000000555555', 3000.00, 'Banco BPM', 'BICDEFG9012', 'MirGae');
@@ -52,20 +51,13 @@ INSERT INTO smu.Portafoglio(NomePortafoglio, Saldo) VALUES('Spese Mensili', 3200
 --INSERT INTO smu.Portafoglio(NomePortafoglio, Saldo) VALUES('Casa Vacanze', 54323.00);
 
 -- Categorie
-INSERT INTO smu.Categoria(nome) VALUES( 'Cibo');
-INSERT INTO smu.Categoria(nome) VALUES('Rimborsi');
-INSERT INTO smu.Categoria(nome) VALUES('Casa');
-INSERT INTO smu.Categoria(nome) VALUES('Auto');
-INSERT INTO smu.Categoria(nome) VALUES('Acquisti');
+INSERT INTO smu.Categoria(Nome, ParolaChiave) VALUES('Cibo e spesa', 'supermercato,supermarket,alimentari,discount,frutta,verdura,salumeria');
+INSERT INTO smu.Categoria(Nome, ParolaChiave) VALUES('Bar e ristoranti', 'ristorante,pizzeria,fastfood,bar,caffe');
+INSERT INTO smu.Categoria(Nome, ParolaChiave) VALUES('Casa', 'bollette,abbonamento,canone,tari');
+INSERT INTO smu.Categoria(Nome, ParolaChiave) VALUES('Motori e Trasporti', 'assicurazione,trasporti,carburante');
+INSERT INTO smu.Categoria(Nome, ParolaChiave) VALUES('Shopping', 'abbigliamento,calzature,tabacchi');
+INSERT INTO smu.Categoria(Nome, ParolaChiave) VALUES('Salute', 'farmacia,sanitaria,benessere,comesi');
 
---ParoleChiave
-INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES('Supermercato', 1);
-INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES('Ristorante', 1);
-INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES('Rimborso', 2);
-INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES('Affitto',3);
-INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES( 'Bollette', 3);
-INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES( 'Carburante', 4);
-INSERT INTO smu.ParoleChiave(Parolachiave, IdCategoria)VALUES( 'Acquisto online', 5);
 
 -- Transazioni
 INSERT INTO smu.Transazione(Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta) VALUES(50.00, '2023-03-21', '13:21:30', 'Rimborso', 'Entrata', 'Rimborso Amazon', NULL, '5355284927482884');
@@ -84,14 +76,6 @@ INSERT INTO smu.Transazione(Importo, Data, Ora, Causale, Tipo, Mittente, Destina
 INSERT INTO smu.Transazione(Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta) VALUES(45.00, '2024-01-15', '13:20:30', 'Stipendio', 'Entrata', 'Agenzia', NULL, '5355284927482884');
 INSERT INTO smu.Transazione(Importo, Data, Ora, Causale, Tipo, Mittente, Destinatario, NumeroCarta) VALUES(600.00, '2024-03-20', '10:15:30', 'Pensione', 'Entrata', 'INPS', NULL, '5555666677778888');
 
-
--- Associazioni
---INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (1, '5355284927482884');
--- INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (2, '5337589274884783');
---INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (3, '1234567890123456');
---INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (3, '5355284927482884');
-
-
 --Programmazione
 INSERT INTO  smu.SpeseProgrammate(Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES('Paghetta Armando', '15 giorni', '2024-03-27', '2024-03-27', 20.00, 'Armando figlio', '5355284927482884');
 INSERT INTO  smu.SpeseProgrammate(Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES('Affitto Mensile', '1 mese', '2024-04-05', '2025-04-05', 800.00, 'Proprietario', '5555666677778888');
@@ -102,9 +86,9 @@ INSERT INTO  smu.SpeseProgrammate(Descrizione, Periodicita, DataScadenza, DataFi
 INSERT INTO  smu.SpeseProgrammate(Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES('Assicurazione Auto Annuale', '1 anno', '2024-03-31', '2025-03-31', 600.00, 'Assicurazioni S.p.A.', '1234567890123456');
 INSERT INTO  smu.SpeseProgrammate(Descrizione, Periodicita, DataScadenza, DataFineRinnovo, Importo, Destinatario, NumeroCarta) VALUES('Pagamento Affitto Garage', '6 mesi', '2024-04-20', '2024-10-20', 150.00, 'Proprietario Garage', '1414141414141414');
 
---Portafogli associati a categorie
-INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(1, 1);
-INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(2, 2);
-INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(2, 3);
-INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(2, 4);
-INSERT INTO smu.PortafogliInCategorie(IdPortafoglio, IdCategoria) VALUES(1, 5);
+
+-- Associazioni  tabella ponte tra portafoglio e carta?
+--INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (1, '5355284927482884');
+-- INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (2, '5337589274884783');
+--INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (3, '1234567890123456');
+--INSERT INTO smu.Associazione(IdPortafoglio, NumeroCarta)VALUES (3, '5355284927482884');
