@@ -41,40 +41,63 @@ EXECUTE FUNCTION smu.triggerTransazione();
 
 ---------------------------------------------------------------------------------------------------------------
 -- 2. Trigger che aggiunge una transazione ad un portafoglio in base alle parole chiave, dopo l'inserimento di una nuova transazione.
+--Questa funzione cerca di categorizzare automaticamente la nuova transazione basandosi sulle parole chiave definite nella tabella smu.Categoria.
+-- Se non viene trovata alcuna corrispondenza, la transazione viene assegnata alla categoria "Altro".
 
-
-CREATE OR REPLACE FUNCTION smu.triggerPortafoglio() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION smu.triggerCategorizzaTransazione() RETURNS TRIGGER AS
 $$
 DECLARE
-    parola  smu.ParoleChiave.ParolaChiave%TYPE;
-    trovato INTEGER := 0;
-    NumPortafoglio smu.Portafoglio.IdPortafoglio%TYPE;
+    nome_categoria smu.Categoria.NomeCategoria%TYPE;    --variabile per iterare sul nome categoria
+    ArrayParoleChiavi TEXT[];            -- Array di testo per memorizzare le parole chiave di una categoria
+    parola TEXT;                    -- Variabile per memorizzare temporaneamente ogni parola chiave
+    matched BOOLEAN := FALSE;       -- Variabile booleana per indicare se è stata trovata una corrispondenza, inizializzata a false
 BEGIN
 
-    FOR parola IN (SELECT PC.ParolaChiave FROM smu.ParoleChiave AS PC)
+    FOR nome_categoria IN
+        SELECT NomeCategoria
+        FROM smu.Categoria
+    LOOP
+        --la funzione string_to_array mi crea una stringa di valori a partire da una stringa di parole separate da virgole
+        --successivamente memorizzo tale array in ArrayParoleChiavi
+        SELECT string_to_array(ParoleChiavi, ',') INTO ArrayParoleChiavi
+            FROM smu.Categoria
+            WHERE NomeCategoria = nome_categoria;
+
+        --memorizzo nella variabile parola l'elemento dell'array ParoleChiave
+        FOREACH parola IN ARRAY ArrayParoleChiavi
         LOOP
-
-            IF LOWER(NEW.Mittente) LIKE '%' || LOWER(parola) || '%' OR
-               LOWER(NEW.Destinatario) LIKE '%' || LOWER(parola) || '%'
-                OR LOWER(NEW.Causale) LIKE '%' || LOWER(parola) || '%' THEN
-
-                SELECT PC.IdPortafoglio
-                INTO NumPortafoglio
-                FROM smu.PortafogliInCategorie AS PC JOIN smu.ParoleChiave AS K ON PC.IdCategoria = PC.IdCategoria
-                WHERE K.ParolaChiave = parola;
-
-                INSERT INTO smu.TransazioniInPortafogli(IdTransazione, IdPortafoglio) VALUES(NEW.IDTransazione,NumPortafoglio);
-                trovato = 1;
+            -- Verifica se la causale contiene la parola chiave
+            IF NEW.Causale ILIKE '%' || parola || '%' THEN
+                NEW.NomeCategoria := nome_categoria;
+                matched := TRUE;
+                EXIT;  -- Esce dal loop delle parole chiave una volta trovata una corrispondenza
             END IF;
-            EXIT WHEN trovato = 1;
         END LOOP;
-    RETURN NEW;
-END;
+
+        -- Se è stata trovata una corrispondenza interrompe il ciclo delle categorie
+        IF matched THEN
+            EXIT;
+        END IF;
+
+    END LOOP;
+
+    -- Se nessuna categoria è stata trovata, assegno la transazione alla categoria "Altro"
+    IF NOT matched THEN
+       NEW.NomeCategoria := 'Altro';
+    END IF;
+
+    --aggiorno il nomecategoria della transazione
+    UPDATE smu.Transazione
+    SET NomeCategoria = NEW.NomeCategoria
+    WHERE IdTransazione = NEW.IdTransazione;
+
+    RETURN NEW;  -- Restituisce la nuova riga con il campo NomeCategoria aggiornato
+    END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER InserisciTransazioneInPortafoglio
+CREATE TRIGGER InserisciCategoriaInTransazione
     AFTER INSERT ON smu.Transazione
-    FOR EACH ROW EXECUTE FUNCTION smu.triggerPortafoglio();
+    FOR EACH ROW EXECUTE FUNCTION smu.triggerCategorizzaTransazione();
 
 
 --------------------------------------------------------------------------------------------------------------
@@ -125,7 +148,7 @@ $$
         RETURN NEW;
 
     END;
-$$LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER ControlloTipoCarta
     BEFORE INSERT ON smu.Carta

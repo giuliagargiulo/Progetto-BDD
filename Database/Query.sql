@@ -8,9 +8,6 @@ GROUP BY (A.idPortafoglio);
 -----------------------------------------------------------------------------------------------------------------------
 --Mi ritorna tutte le spese programmate da fare oggi
 
-
-
-
 INSERT INTO smu.Transazione VALUES(14728139341, Importo, CURRENT_DATE, CURRENT_TIME, Descrizione, 'Uscita', NULL, Destinatario, NumeroCarta, NULL)
 SELECT S.Importo, S.Descrizione, S.Destinatario, S.NumeroCarta
     FROM smu.SpeseProgrammate AS S

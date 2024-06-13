@@ -83,13 +83,11 @@ CREATE TABLE smu.SpeseProgrammate(
 
 --Tabella Categoria
 CREATE TABLE smu.Categoria(
-    IdCategoria SERIAL,
-    Nome VARCHAR(32) UNIQUE,
-    ParolaChiave     VARCHAR(32),
+  NomeCategoria VARCHAR(32) UNIQUE,
+  ParoleChiavi     VARCHAR(256),
 
-    CONSTRAINT PK_Categoria PRIMARY KEY (IdCategoria)
+  CONSTRAINT PK_Nome PRIMARY KEY (NomeCategoria)
 );
-
 
 --Tabella Transazione
 CREATE TABLE smu.Transazione(
@@ -103,11 +101,11 @@ CREATE TABLE smu.Transazione(
     Mittente      VARCHAR(32),
     Destinatario  VARCHAR(32),
     NumeroCarta   VARCHAR(16),
-    IdCategoria   INTEGER,
+    NomeCategoria VARCHAR(32),
 
     CONSTRAINT PK_Transazione PRIMARY KEY (IdTransazione),
     CONSTRAINT FK_Carta FOREIGN KEY (NumeroCarta) REFERENCES smu.Carta (NumeroCarta) ON DELETE CASCADE,
-    CONSTRAINT FK_Categoria FOREIGN KEY (IdCategoria) REFERENCES smu.Categoria (IdCategoria) ON DELETE CASCADE,
+    CONSTRAINT FK_Categoria FOREIGN KEY (NomeCategoria) REFERENCES smu.Categoria (NomeCategoria) ON DELETE CASCADE,
 
     CONSTRAINT CK_Transazione_CRO CHECK (CRO ~ '[0-9]{11,16}'),
     CONSTRAINT CK_Transazione_Tipo CHECK (Tipo IN ('Entrata', 'Uscita')),
@@ -128,9 +126,7 @@ CREATE TABLE smu.Portafoglio(
 );
 
 
-
-
---tabella ponte tra Portafoglio e Carta  a
+--tabella ponte tra Portafoglio e Carta  *a*
 CREATE TABLE smu.AssociazioneCartaPortafoglio(
     IdPortafoglio INTEGER,
     NumeroCarta   VARCHAR(16),
@@ -140,7 +136,7 @@ CREATE TABLE smu.AssociazioneCartaPortafoglio(
 );
 
 
---tabella ponte tra Portafoglio e Transazione  a
+--tabella ponte tra Portafoglio e Transazione  *a*
 CREATE TABLE smu.TransazioniInPortafogli(
     IdTransazione INTEGER,
     IdPortafoglio INTEGER,
@@ -148,4 +144,7 @@ CREATE TABLE smu.TransazioniInPortafogli(
     CONSTRAINT FK_Transazione FOREIGN KEY (IdTransazione) REFERENCES smu.Transazione (IdTransazione) ON DELETE CASCADE,
     CONSTRAINT FK_Portafoglio FOREIGN KEY (IdPortafoglio) REFERENCES smu.Portafoglio (IdPortafoglio) ON DELETE CASCADE
 );
+
+
+
 
