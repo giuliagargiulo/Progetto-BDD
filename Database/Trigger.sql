@@ -40,7 +40,7 @@ EXECUTE FUNCTION smu.triggerTransazione();
 
 
 ---------------------------------------------------------------------------------------------------------------
--- 2. Trigger che aggiunge una transazione ad un portafoglio in base alle parole chiave, dopo l'inserimento di una nuova transazione.
+-- 2. Trigger che aggiunge una transazione ad una categoria in base alle parole chiave, dopo l'inserimento di una nuova transazione.
 --Questa funzione cerca di categorizzare automaticamente la nuova transazione basandosi sulle parole chiave definite nella tabella smu.Categoria.
 -- Se non viene trovata alcuna corrispondenza, la transazione viene assegnata alla categoria "Altro".
 
