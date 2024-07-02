@@ -32,10 +32,10 @@ CREATE TABLE smu.Utente(
 --Tabella Conto Corrente
 CREATE TABLE smu.ContoCorrente(
     NumeroConto VARCHAR(12),
-    IBAN        VARCHAR(27)  NOT NULL,
+    IBAN        VARCHAR(27)  UNIQUE NOT NULL,
     Saldo       FLOAT        NOT NULL,
     NomeBanca   VARCHAR(128) NOT NULL,
-    BIC         VARCHAR(11)  NOT NULL,
+    BIC         VARCHAR(11)  UNIQUE NOT NULL,
     Username    VARCHAR(32),
 
     CONSTRAINT PK_Conto PRIMARY KEY (NumeroConto),
@@ -51,7 +51,7 @@ CREATE TABLE smu.Carta(
     Nome        VARCHAR(32),
     CVV         VARCHAR(3) NOT NULL,
     Scadenza    DATE       NOT NULL,
-    Saldo       FLOAT,
+    Saldo       FLOAT      NOT NULL,
     TipoCarta   VARCHAR(7) NOT NULL,
     Plafond     FLOAT,
     NumeroConto VARCHAR(12),
@@ -83,8 +83,8 @@ CREATE TABLE smu.SpeseProgrammate(
 
 --Tabella Categoria
 CREATE TABLE smu.Categoria(
-  NomeCategoria VARCHAR(32) UNIQUE,
-  ParoleChiavi     VARCHAR(256),
+  NomeCategoria  VARCHAR(32),
+  ParoleChiavi   VARCHAR(256)  NOT NULL,
 
   CONSTRAINT PK_Nome PRIMARY KEY (NomeCategoria)
 );
