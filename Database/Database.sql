@@ -41,7 +41,7 @@ CREATE TABLE smu.ContoCorrente(
     CONSTRAINT PK_Conto PRIMARY KEY (NumeroConto),
     CONSTRAINT FK_Utente FOREIGN KEY (Username) REFERENCES smu.Utente (Username) ON DELETE CASCADE,
     CONSTRAINT CK_IBAN CHECK (IBAN ~ '[A-Z]{2}[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[0-9A-Z]{5}'),
-    CONSTRAINT CK_BIC CHECK (BIC ~ '[A-Z]{4}[A-Z]{2}[0-9A-Z]{2}[0-9A-Z]{0,3}')
+    CONSTRAINT CK_BIC CHECK (BIC ~ '[A-Z]{6}[0-9A-Z]{2}[0-9A-Z]{0,3}')
 );
 
 
@@ -77,7 +77,7 @@ CREATE TABLE smu.SpeseProgrammate(
 
     CONSTRAINT PK_Spesa PRIMARY KEY (IdSpesa),
     CONSTRAINT FK_Carta FOREIGN KEY (NumeroCarta) REFERENCES smu.Carta (NumeroCarta) ON DELETE CASCADE,
-    CONSTRAINT CK_SpeseProgrammate_Periodicita CHECK (Periodicita IN
+    CONSTRAINT CK_Periodicita CHECK (Periodicita IN
                                                       ('7 giorni', '15 giorni', '1 mese', '3 mesi', '6 mesi', '1 anno'))
 );
 
@@ -107,8 +107,8 @@ CREATE TABLE smu.Transazione(
     CONSTRAINT FK_Carta FOREIGN KEY (NumeroCarta) REFERENCES smu.Carta (NumeroCarta) ON DELETE CASCADE,
     CONSTRAINT FK_Categoria FOREIGN KEY (NomeCategoria) REFERENCES smu.Categoria (NomeCategoria) ON DELETE CASCADE,
 
-    CONSTRAINT CK_Transazione_CRO CHECK (CRO ~ '[0-9]{11,16}'),
-    CONSTRAINT CK_Transazione_Tipo CHECK (Tipo IN ('Entrata', 'Uscita')),
+    CONSTRAINT CK_CRO CHECK (CRO ~ '[0-9]{11,16}'),
+    CONSTRAINT CK_Tipo CHECK (Tipo IN ('Entrata', 'Uscita')),
     CONSTRAINT CK_Data CHECK (data <= CURRENT_DATE)
 );
 
