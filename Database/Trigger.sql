@@ -182,3 +182,44 @@ CREATE OR REPLACE TRIGGER GeneraCro
 
 
 ----------------------------------------------------------------------------------------------------------------------
+
+--6. Trigger che inizializza il saldo di un portafoglio a 0 dopo l'inserimento di un nuovo portafoglio
+CREATE OR REPLACE FUNCTION smu.triggerInizializzaSaldoPortafoglio() RETURNS TRIGGER AS
+$$
+BEGIN
+    UPDATE smu.Portafoglio
+    SET Saldo = 0
+    WHERE IdPortafoglio = NEW.IdPortafoglio;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER InizializzaSaldoPortafoglio
+    AFTER INSERT
+    ON smu.Portafoglio
+    FOR EACH ROW
+EXECUTE FUNCTION smu.triggerInizializzaSaldoPortafoglio();
+
+----------------------------------------------------------------------------------------------------------------------
+
+--7. Trigger che aggiorna il saldo del portafoglio a seguito dell'inserimento di una transazione
+
+CREATE OR REPLACE FUNCTION smu.triggerAggiornaSaldoPortafoglio() RETURNS TRIGGER AS
+$$
+BEGIN
+UPDATE smu.Portafoglio
+    SET Saldo = Saldo + (SELECT T.Importo
+                         FROM (smu.Transazione AS T JOIN smu.TransazioniInPortafogli AS TP on T.IdTransazione = TP.IdTransazione)
+                             JOIN smu.Portafoglio AS P on TP.IdPortafoglio = P.IdPortafoglio
+                         WHERE T.IdTransazione = NEW.IdTransazione)
+    WHERE IdPortafoglio = NEW.IdPortafoglio;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER ModificaSaldoPortafoglio
+    AFTER INSERT
+    ON smu.TransazioniInPortafogli
+    FOR EACH ROW
+EXECUTE FUNCTION smu.triggerAggiornaSaldoPortafoglio();
+

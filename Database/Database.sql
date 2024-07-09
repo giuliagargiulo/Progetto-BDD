@@ -117,7 +117,7 @@ CREATE TABLE smu.Transazione(
 CREATE TABLE smu.Portafoglio(
     IdPortafoglio   SERIAL,
     NomePortafoglio VARCHAR(32) NOT NULL,
-    Saldo           FLOAT       NOT NULL,
+    Saldo           FLOAT,
     IdFamiglia      INTEGER,
 
     CONSTRAINT PK_Portafoglio PRIMARY KEY (IdPortafoglio),
