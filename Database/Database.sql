@@ -144,7 +144,3 @@ CREATE TABLE smu.TransazioniInPortafogli(
     CONSTRAINT FK_Transazione FOREIGN KEY (IdTransazione) REFERENCES smu.Transazione (IdTransazione) ON DELETE CASCADE,
     CONSTRAINT FK_Portafoglio FOREIGN KEY (IdPortafoglio) REFERENCES smu.Portafoglio (IdPortafoglio) ON DELETE CASCADE
 );
-
-
-
-
