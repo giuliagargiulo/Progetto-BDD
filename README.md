@@ -21,7 +21,9 @@ SavingMoneyUnina è un sistema per la gestione delle finanze personali e familia
 
 
 ## 👩‍💻 Autori
-- [Giulia Gargiulo](https://github.com/giuliagargiulo)
-- [Miriam Gaetano](https://github.com/miriam014)
 - [Fortunata D'Urso](https://github.com/Tatuuz)
+- [Miriam Gaetano](https://github.com/miriam014)
+- [Giulia Gargiulo](https://github.com/giuliagargiulo)
+
+
   
